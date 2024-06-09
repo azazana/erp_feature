@@ -1,10 +1,10 @@
 DECLARE @mydb nvarchar(50);
--- Ввести имя базы данных
-set @mydb = 'test_erp_test';
+-- Р’РІРµСЃС‚Рё РёРјСЏ Р±Р°Р·С‹ РґР°РЅРЅС‹С…
+set @mydb = '$(restoreddb)';
 
 DECLARE @back_file nvarchar(300);
--- Ввести расположение файла бэкапа
-set @back_file = 'C:\Users\Support1c\AppData\Local\Jenkins\.jenkins\workspace\erp_features\build\temp_erp_test_20240600943';
+-- пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+set @back_file = '$(bakfile)';
 
 use master;
 
@@ -81,11 +81,11 @@ FROM    #restoreFiles
 
 WHERE   Type = 'L';
 
--- Определяем физическое расположение mdf файла
+-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ mdf пїЅпїЅпїЅпїЅпїЅ
 DECLARE @myfile_mdf_phys nvarchar(300);
 set @myfile_mdf_phys = (select physical_name from sys.master_files where db_name(database_id) = @mydb and type_desc = 'ROWS');
 
--- Определяем физическое расположение ldf файла
+-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ ldf пїЅпїЅпїЅпїЅпїЅ
 DECLARE @myfile_ldf_phys nvarchar(300);
 set @myfile_ldf_phys = (select physical_name from sys.master_files where db_name(database_id) = @mydb and type_desc = 'LOG');
 
@@ -94,7 +94,7 @@ SET @SQLSingle = 'ALTER DATABASE '+ @mydb +' SET SINGLE_USER WITH ROLLBACK IMMED
 exec (@SQLSingle);
 
 
--- Восстанавливаем базу данных @mydb, файлы пишем в пути @myfile_mdf_phys и @myfile_ldf_phys
+-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ @mydb, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ @myfile_mdf_phys пїЅ @myfile_ldf_phys
 RESTORE DATABASE @mydb FROM  DISK = @back_file WITH  FILE = 1, MOVE @logicalDataFile TO @myfile_mdf_phys,  MOVE @logicalLogFile TO @myfile_ldf_phys,  NOUNLOAD, REPLACE,   STATS = 10;
 
 
@@ -176,11 +176,11 @@ FROM    #restoreFiles2
 
 WHERE   Type = 'L';
 
--- Определяем физическое расположение mdf файла
+-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ mdf пїЅпїЅпїЅпїЅпїЅ
 --DECLARE @myfile_mdf_phys nvarchar(300);
 set @myfile_mdf_phys = (select physical_name from sys.master_files where db_name(database_id) = @mydb and type_desc = 'ROWS');
 
--- Определяем физическое расположение ldf файла
+-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ ldf пїЅпїЅпїЅпїЅпїЅ
 --DECLARE @myfile_ldf_phys nvarchar(300);
 set @myfile_ldf_phys = (select physical_name from sys.master_files where db_name(database_id) = @mydb and type_desc = 'LOG');
 
@@ -189,7 +189,7 @@ SET @SQLSingle = 'ALTER DATABASE '+ @mydb +' SET SINGLE_USER WITH ROLLBACK IMMED
 exec (@SQLSingle);
 
 
--- Восстанавливаем базу данных @mydb, файлы пишем в пути @myfile_mdf_phys и @myfile_ldf_phys
+-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ @mydb, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ @myfile_mdf_phys пїЅ @myfile_ldf_phys
 RESTORE DATABASE @mydb FROM  DISK = @back_file WITH  FILE = 1, MOVE @logicalDataFile TO @myfile_mdf_phys,  MOVE @logicalLogFile TO @myfile_ldf_phys,  NOUNLOAD, REPLACE,   STATS = 10;
 
 
