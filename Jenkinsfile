@@ -30,7 +30,7 @@ pipeline {
         string(defaultValue: "${env.storages1cPath}", description: 'Необязательный. Пути к хранилищам 1С для обновления копий баз тестирования через запятую. Число хранилищ (если указаны), должно соответствовать числу баз тестирования. Например D:/temp/storage1c/erp,D:/temp/storage1c/upp', name: 'storages1cPath')
         string(defaultValue: "${env.storageUser}", description: 'Необязательный. Администратор хранилищ  1C. Должен быть одинаковым для всех хранилищ', name: 'storageUser')
         string(defaultValue: "${env.storagePwd}", description: 'Необязательный. Пароль администратора хранилищ 1c', name: 'storagePwd')
-        string(defaultValue: "${env.backupPath}", description: 'Путь к бэкапам сетевым', name: 'backupPath')
+        string(defaultValue: "${env.backupDir}", description: 'Путь к бэкапам сетевым', name: 'backupDir')
     }
 
     agent {
@@ -90,19 +90,19 @@ pipeline {
                                 sqluser,
                                 sqlPwd
                             )
-                            // 2. Делаем sql бекап эталонной базы, которую будем загружать в тестовую базу
-                            backupTasks["backupTask_${templateDb}"] = backupTask(
-                                serverSql, 
-                                templateDb, 
-                                backupPath,
-                                sqlUser,
-                                sqlPwd
-                            )
+                            // // 2. Делаем sql бекап эталонной базы, которую будем загружать в тестовую базу
+                            // backupTasks["backupTask_${templateDb}"] = backupTask(
+                            //     serverSql, 
+                            //     templateDb, 
+                            //     backupPath,
+                            //     sqlUser,
+                            //     sqlPwd
+                            // )
                             // 3. Загружаем sql бекап эталонной базы в тестовую
                             restoreTasks["restoreTask_${testbase}"] = restoreTask(
                                 serverSql, 
                                 testbase, 
-                                backupPath,
+                                backupDir,
                                 sqlUser,
                                 sqlPwd
                             )
@@ -223,18 +223,18 @@ def createDbTask(server1c, serverSql, platform1c, infobase) {
     }
 }
 
-def backupTask(serverSql, infobase, backupPath, sqlUser, sqlPwd) {
-    return {
-        stage("sql бекап ${infobase}") {
-            timestamps {
-                def sqlUtils = new SqlUtils()
+// def backupTask(serverSql, infobase, backupPath, sqlUser, sqlPwd) {
+//     return {
+//         stage("sql бекап ${infobase}") {
+//             timestamps {
+//                 def sqlUtils = new SqlUtils()
 
-                sqlUtils.checkDb(serverSql, infobase, sqlUser, sqlPwd)
-                sqlUtils.backupDb(serverSql, infobase, backupPath, sqlUser, sqlPwd)
-            }
-        }
-    }
-}
+//                 sqlUtils.checkDb(serverSql, infobase, sqlUser, sqlPwd)
+//                 sqlUtils.backupDb(serverSql, infobase, backupPath, sqlUser, sqlPwd)
+//             }
+//         }
+//     }
+// }
 
 def restoreTask(serverSql, infobase, backupPath, sqlUser, sqlPwd) {
     return {
