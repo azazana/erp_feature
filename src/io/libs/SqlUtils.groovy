@@ -154,7 +154,7 @@ def restoreDb(dbServer, infobase, backupDir, sqlUser, sqlPwd) {
         sqlPwdPath = "-P ${sqlPwd}"
     }
 
-    echo "-v bakfile=\"${latestBackup}\""
+    echo "-v bakfile=\"${backupDir}\""
     def latestBackup = getLatestBackup(backupDir)
  
     returnCode = utils.cmd("sqlcmd -S ${dbServer} ${sqlUserpath} ${sqlPwdPath} -i \"${env.WORKSPACE}/copy_etalon/restore.sql\" -b -v restoreddb =${infobase} -v bakfile=\"${latestBackup}\"")
