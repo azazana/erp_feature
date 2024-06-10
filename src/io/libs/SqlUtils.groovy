@@ -45,10 +45,9 @@ def getLatestBackup(backupDir) {
         if (!Files.exists(Paths.get(backupDir)) || !Files.isDirectory(Paths.get(backupDir))) {
             throw new IllegalArgumentException("Backup directory does not exist or is not a directory: ${backupDir}")
         }
-        echo "-v bakfile=\"${backupDir}\""
- 
+
         // Получаем список файлов в директории
-        Stream<Path> files = Files.list(Paths.get(backupDir)).collect(Collectors.toList())
+        List<Path> files = Files.list(Paths.get(backupDir)).collect(Collectors.toList())
 
         if (files.isEmpty()) {
             throw new IllegalArgumentException("No backup files found in directory: ${backupDir}")
@@ -61,7 +60,6 @@ def getLatestBackup(backupDir) {
             if (latestFile == null || lastModifiedTime > latestModifiedTime) {
                 latestFile = filePath
                 latestModifiedTime = lastModifiedTime
-                echo "-v bakfile=\"${latestFile}\""
             }
         }
         echo "Latest backup file: ${latestFile}"
