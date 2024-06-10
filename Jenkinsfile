@@ -90,6 +90,8 @@ pipeline {
                                 sqluser,
                                 sqlPwd
                             )
+                            // 2. Проверяем пути
+                            checkPaths["checkPaths_${testbase}"] = checkPaths()
                             // // 2. Делаем sql бекап эталонной базы, которую будем загружать в тестовую базу
                             // backupTasks["backupTask_${templateDb}"] = backupTask(
                             //     serverSql, 
@@ -222,6 +224,27 @@ def createDbTask(server1c, serverSql, platform1c, infobase) {
         }
     }
 }
+def checkPaths() {
+    return {    
+        stage('Check Access Rights') {
+            steps {
+                script {
+                    def backupDir = "\\\\rs-backup\\erp_backup\\erp_w_001"
+                    def restoreFile = "C:\\Users\\Support1c\\AppData\\Local\\Jenkins\\.jenkins\\workspace\\erp_features\\copy_etalon\\restore.sql"
+
+                    // Использование bat для проверки доступа к файлам и директориям
+                    echo "Checking access to backup directory: ${backupDir}"
+                    bat "if not exist ${backupDir} (echo 'Backup directory does not exist: ${backupDir}' && exit /b 1) else echo 'Backup directory exists: ${backupDir}'"
+                    bat "dir ${backupDir}"
+
+                    echo "Checking access to restore file: ${restoreFile}"
+                    bat "if not exist ${restoreFile} (echo 'Restore file does not exist: ${restoreFile}' && exit /b 1) else echo 'Restore file exists: ${restoreFile}'"
+                    bat "dir ${restoreFile}"
+                }
+            }
+        }
+    }
+}   
 
 // def backupTask(serverSql, infobase, backupPath, sqlUser, sqlPwd) {
 //     return {
