@@ -227,8 +227,7 @@ def createDbTask(server1c, serverSql, platform1c, infobase) {
 def checkPaths() {
     return {    
         stage('Check Access Rights') {
-            steps {
-                script {
+           timestamps {
                     def backupDir = "\\\\rs-backup\\erp_backup\\erp_w_001"
                     def restoreFile = "C:\\Users\\Support1c\\AppData\\Local\\Jenkins\\.jenkins\\workspace\\erp_features\\copy_etalon\\restore.sql"
 
@@ -241,7 +240,6 @@ def checkPaths() {
                     bat "if not exist ${restoreFile} (echo 'Restore file does not exist: ${restoreFile}' && exit /b 1) else echo 'Restore file exists: ${restoreFile}'"
                     bat "dir ${restoreFile}"
                 }
-            }
         }
     }
 }   
