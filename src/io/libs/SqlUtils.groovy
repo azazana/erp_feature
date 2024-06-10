@@ -80,25 +80,23 @@ def getLatestBackup(backupDir) {
 //  sqlPwd - Необязательный. пароль админа sql базы
 //
 def backupDb(dbServer, infobase, backupPath, sqlUser, sqlPwd) {
-    utils = new Utils()
+    def utils = new Utils()
+    try {
+        def sqlUserpath = (sqlUser != null && !sqlUser.isEmpty()) ? "-U ${sqlUser}" : "-E"
+        def sqlPwdPath = (sqlPwd != null && !sqlPwd.isEmpty()) ? "-P ${sqlPwd}" : ""
 
-    sqlUserpath = "" 
-    if (sqlUser != null && !sqlUser.isEmpty()) {
-        sqlUserpath = "-U ${sqlUser}"
-    } else {
-        sqlUserpath = "-E"
-    }
-
-    sqlPwdPath = "" 
-    if (sqlPwd != null && !sqlPwd.isEmpty()) {
-        sqlPwdPath = "-P ${sqlPwd}"
-    }
-    echo "sqlcmd -S ${dbServer} ${sqlUserpath} ${sqlPwdPath} -i \"${env.WORKSPACE}/copy_etalon/backup.sql\" -b -v backupdb =${infobase} -v bakfile=\"${backupPath}\""
-    returnCode = utils.cmd("sqlcmd -S ${dbServer} ${sqlUserpath} ${sqlPwdPath} -i \"${env.WORKSPACE}/copy_etalon/backup.sql\" -b -v backupdb =${infobase} -v bakfile=\"${backupPath}\"")
-    if (returnCode != 0) {
-        utils.raiseError("Возникла ошибки при создании бекапа sql базы ${dbServer}\\${infobase}. Для подробностей смотрите логи")
+        def command = "sqlcmd -S ${dbServer} ${sqlUserpath} ${sqlPwdPath} -i '${env.WORKSPACE}/copy_etalon/backup.sql' -b -v backupdb=${infobase} -v bakfile='${backupPath}'"
+        echo "Executing command: ${command}"
+        def returnCode = utils.cmd(command)
+        if (returnCode != 0) {
+            utils.raiseError("Возникла ошибка при создании бекапа sql базы ${dbServer}\\${infobase}. Для подробностей смотрите логи")
+        }
+    } catch (Exception e) {
+        echo "Exception in backupDb: ${e.message}"
+        throw e
     }
 }
+
 
 // Создает пустую базу на сервере БД
 //
