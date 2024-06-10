@@ -78,7 +78,7 @@ pipeline {
                             testbase = "test_${templateDb}"
                             testbaseConnString = projectHelpers.getConnString(server1c, testbase, agent1cPort)
                             backupPath = "${env.WORKSPACE}/build/temp_${templateDb}_${utils.currentDateStamp()}"
-
+                            backupDir = backupDir.isEmpty() ? "${env.WORKSPACE}/build/" : server1c
                             // 1. Удаляем тестовую базу из кластера (если он там была) и очищаем клиентский кеш 1с
                             dropDbTasks["dropDbTask_${testbase}"] = dropDbTask(
                                 server1c, 
@@ -236,14 +236,14 @@ def createDbTask(server1c, serverSql, platform1c, infobase) {
 //     }
 // }
 
-def restoreTask(serverSql, infobase, backupPath, sqlUser, sqlPwd) {
+def restoreTask(serverSql, infobase, backupDir, sqlUser, sqlPwd) {
     return {
         stage("Востановление ${infobase} бекапа") {
             timestamps {
                 sqlUtils = new SqlUtils()
 
                 sqlUtils.createEmptyDb(serverSql, infobase, sqlUser, sqlPwd)
-                sqlUtils.restoreDb(serverSql, infobase, backupPath, sqlUser, sqlPwd)
+                sqlUtils.restoreDb(serverSql, infobase, backupDir, sqlUser, sqlPwd)
             }
         }
     }
