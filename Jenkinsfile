@@ -99,7 +99,7 @@ pipeline {
                     // if (process.exitValue() != 0) {
                     //     error "Command failed with exit code ${process.exitValue()}"
                     // }
-                    def returnCode = bat(script: command, returnStatus: true)
+                    // def returnCode = bat(script: command, returnStatus: true)
                     
                 }
             }
