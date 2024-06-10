@@ -160,9 +160,9 @@ def restoreDb(dbServer, infobase, backupDir, sqlUser, sqlPwd) {
     echo "Executing command work: ${command}"
     // def command2 = "sqlcmd -S ${dbServer} ${sqlUserpath} ${sqlPwdPath} -i \"${env.WORKSPACE}\\copy_etalon\\restore.sql\" -b -v restoreddb =${infobase} -v bakfile=\"${latestBackup}\""
     // echo "Executing command not work: ${command2}"
+    def returnCode = bat(script: command, returnStatus: true)
 
-
-    returnCode = utils.cmd("${command}")
+    // returnCode = utils.cmd("${command}")
     if (returnCode != 0) {
          utils.raiseError("Возникла ошибка при восстановлении базы из sql бекапа ${dbServer}\\${infobase}. Для подробностей смотрите логи")
     } 
