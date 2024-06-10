@@ -33,20 +33,25 @@ def checkDb(dbServer, infobase, sqlUser, sqlPwd) {
 
 
 def getLatestBackup(backupDir) {
-    def latestFile = null
-    def latestModifiedTime = 0
+    try {
+        def latestFile = null
+        def latestModifiedTime = 0
 
-    Files.list(Paths.get(backupDir)).each { filePath ->
-        def attrs = Files.readAttributes(filePath, BasicFileAttributes.class)
-        def lastModifiedTime = attrs.lastModifiedTime().toMillis()
+        Files.list(Paths.get(backupDir)).each { filePath ->
+            def attrs = Files.readAttributes(filePath, BasicFileAttributes.class)
+            def lastModifiedTime = attrs.lastModifiedTime().toMillis()
 
-        if (latestFile == null || lastModifiedTime > latestModifiedTime) {
-            latestFile = filePath
-            latestModifiedTime = lastModifiedTime
+            if (latestFile == null || lastModifiedTime > latestModifiedTime) {
+                latestFile = filePath
+                latestModifiedTime = lastModifiedTime
+            }
         }
+        echo "Latest backup file: ${latestFile}"
+        return latestFile
+    } catch (Exception e) {
+        echo "Exception in getLatestBackup: ${e.message}"
+        throw e
     }
-
-    return latestFile
 }
 
 
