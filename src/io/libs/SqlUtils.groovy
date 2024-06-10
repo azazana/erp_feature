@@ -1,5 +1,10 @@
 package io.libs;
-import java.nio.file.*
+
+import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 
 // Проверяет соединение к БД и наличие базы
 //
@@ -31,13 +36,24 @@ def checkDb(dbServer, infobase, sqlUser, sqlPwd) {
 }
 
 
-
 def getLatestBackup(backupDir) {
     try {
         def latestFile = null
         def latestModifiedTime = 0
 
-        Files.list(Paths.get(backupDir)).each { filePath ->
+        // Сначала проверим, существует ли директория
+        if (!Files.exists(Paths.get(backupDir)) || !Files.isDirectory(Paths.get(backupDir))) {
+            throw new IllegalArgumentException("Backup directory does not exist or is not a directory: ${backupDir}")
+        }
+
+        // Получаем список файлов в директории
+        Stream<Path> files = Files.list(Paths.get(backupDir)).collect(Collectors.toList())
+
+        if (files.isEmpty()) {
+            throw new IllegalArgumentException("No backup files found in directory: ${backupDir}")
+        }
+
+        files.each { filePath ->
             def attrs = Files.readAttributes(filePath, BasicFileAttributes.class)
             def lastModifiedTime = attrs.lastModifiedTime().toMillis()
 
@@ -53,7 +69,6 @@ def getLatestBackup(backupDir) {
         throw e
     }
 }
-
 
 // Создает бекап базы по пути указанному в параметре backupPath
 //
