@@ -45,7 +45,8 @@ def getLatestBackup(backupDir) {
         if (!Files.exists(Paths.get(backupDir)) || !Files.isDirectory(Paths.get(backupDir))) {
             throw new IllegalArgumentException("Backup directory does not exist or is not a directory: ${backupDir}")
         }
-
+        echo "-v bakfile=\"${backupDir}\""
+ 
         // Получаем список файлов в директории
         Stream<Path> files = Files.list(Paths.get(backupDir)).collect(Collectors.toList())
 
@@ -60,6 +61,7 @@ def getLatestBackup(backupDir) {
             if (latestFile == null || lastModifiedTime > latestModifiedTime) {
                 latestFile = filePath
                 latestModifiedTime = lastModifiedTime
+                echo "-v bakfile=\"${latestFile}\""
             }
         }
         echo "Latest backup file: ${latestFile}"
@@ -154,7 +156,6 @@ def restoreDb(dbServer, infobase, backupDir, sqlUser, sqlPwd) {
         sqlPwdPath = "-P ${sqlPwd}"
     }
 
-    echo "-v bakfile=\"${backupDir}\""${infobase}""${sqlUser}""
     def latestBackup = getLatestBackup(backupDir)
  
     returnCode = utils.cmd("sqlcmd -S ${dbServer} ${sqlUserpath} ${sqlPwdPath} -i \"${env.WORKSPACE}/copy_etalon/restore.sql\" -b -v restoreddb =${infobase} -v bakfile=\"${latestBackup}\"")
