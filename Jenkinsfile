@@ -8,6 +8,7 @@ def utils = new Utils()
 def projectHelpers = new ProjectHelpers()
 def backupTasks = [:]
 def restoreTasks = [:]
+def checkPaths = [:]
 def dropDbTasks = [:]
 def createDbTasks = [:]
 def runHandlers1cTasks = [:]
@@ -137,6 +138,7 @@ pipeline {
 
                         parallel dropDbTasks
                         parallel backupTasks
+                        parallel checkPaths
                         parallel restoreTasks
                         parallel createDbTasks
                         parallel updateDbTasks
@@ -252,7 +254,7 @@ def checkPaths() {
 
 //                 sqlUtils.checkDb(serverSql, infobase, sqlUser, sqlPwd)
 //                 sqlUtils.backupDb(serverSql, infobase, backupPath, sqlUser, sqlPwd)
-//             }
+//             } 
 //         }
 //     }
 // }
