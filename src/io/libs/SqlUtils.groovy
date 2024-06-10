@@ -157,15 +157,16 @@ def restoreDb(dbServer, infobase, backupDir, sqlUser, sqlPwd) {
 
     def latestBackup = getLatestBackup(backupDir)
     def command = "sqlcmd -S localhost -U sa -P bVeqxLh7btw87z7d -i \"C:\\Users\\Support1c\\AppData\\Local\\Jenkins\\.jenkins\\workspace\\erp_features\\copy_etalon\\restore.sql\" -b -v restoreddb=test_erp_test -v bakfile=\"\\\\rs-backup\\erp_backup\\erp_w_001\\erp_w_001_backup_2023_12_25_230001_0904933.bak\""
+    def command = "sqlcmd -S localhost -U sa -P bVeqxLh7btw87z7d -i \"C:\\Users\\Support1c\\AppData\\Local\\Jenkins\\.jenkins\\workspace\\erp_features\\copy_etalon\\restore.sql\" -b -v restoreddb=test_erp_test -v bakfile=\"\\\\rs-backup\\erp_backup\\erp_w_001\\erp_w_001_backup_2023_12_25_230001_0904933.bak\""
     echo "Executing command work: ${command}"
     // def command2 = "sqlcmd -S ${dbServer} ${sqlUserpath} ${sqlPwdPath} -i \"${env.WORKSPACE}\\copy_etalon\\restore.sql\" -b -v restoreddb =${infobase} -v bakfile=\"${latestBackup}\""
     // echo "Executing command not work: ${command2}"
-    def returnCode = bat(script: command, returnStatus: true)
+    // def returnCode = bat(script: command, returnStatus: true)
 
     // returnCode = utils.cmd("${command}")
-    if (returnCode != 0) {
-         utils.raiseError("Возникла ошибка при восстановлении базы из sql бекапа ${dbServer}\\${infobase}. Для подробностей смотрите логи")
-    } 
+    // if (returnCode != 0) {
+    //      utils.raiseError("Возникла ошибка при восстановлении базы из sql бекапа ${dbServer}\\${infobase}. Для подробностей смотрите логи")
+    // } 
 }
 
 
