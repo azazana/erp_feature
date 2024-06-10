@@ -84,6 +84,26 @@ pipeline {
         }
     }
                 }        
+
+        stage('Restore Database') {
+            steps {
+                script {
+                    def command = "sqlcmd -S localhost -U sa -P bVeqxLh7btw87z7d -i \"C:\\Users\\Support1c\\AppData\\Local\\Jenkins\\.jenkins\\workspace\\erp_features\\copy_etalon\\restore.sql\" -b -v restoreddb=test_erp_test -v bakfile=\"\\\\rs-backup\\erp_backup\\erp_w_001\\erp_w_001_backup_2023_12_25_230001_0904933.bak\""
+                    echo "Executing command: ${command}"
+                    // def stdout = new StringBuilder()
+                    // def stderr = new StringBuilder()
+                    // def process = command.execute()
+                    // process.waitForProcessOutput(stdout, stderr)
+                    // echo "STDOUT: ${stdout.toString()}"
+                    // echo "STDERR: ${stderr.toString()}"
+                    // if (process.exitValue() != 0) {
+                    //     error "Command failed with exit code ${process.exitValue()}"
+                    // }
+                    def returnCode = bat(script: command, returnStatus: true)
+                    
+                }
+            }
+        }
         stage("Запуск") {
             steps {
                 timestamps {
