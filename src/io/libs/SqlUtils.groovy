@@ -36,39 +36,6 @@ def checkDb(dbServer, infobase, sqlUser, sqlPwd) {
 }
 
 
-def getLatestBackup(backupDir) {
-    try {
-        def latestFile = null
-        def latestModifiedTime = 0
-
-        // Сначала проверим, существует ли директория
-        if (!Files.exists(Paths.get(backupDir)) || !Files.isDirectory(Paths.get(backupDir))) {
-            throw new IllegalArgumentException("Backup directory does not exist or is not a directory: ${backupDir}")
-        }
-
-        // Получаем список файлов в директории
-        List<Path> files = Files.list(Paths.get(backupDir)).collect(Collectors.toList())
-
-        if (files.isEmpty()) {
-            throw new IllegalArgumentException("No backup files found in directory: ${backupDir}")
-        }
-
-        files.each { filePath ->
-            def attrs = Files.readAttributes(filePath, BasicFileAttributes.class)
-            def lastModifiedTime = attrs.lastModifiedTime().toMillis()
-
-            if (latestFile == null || lastModifiedTime > latestModifiedTime) {
-                latestFile = filePath
-                latestModifiedTime = lastModifiedTime
-            }
-        }
-        echo "Latest backup file: ${latestFile}"
-        return latestFile
-    } catch (Exception e) {
-        echo "Exception in getLatestBackup: ${e.message}"
-        throw e
-    }
-}
 
 // Создает бекап базы по пути указанному в параметре backupPath
 //
@@ -127,6 +94,42 @@ def createEmptyDb(dbServer, infobase, sqlUser, sqlPwd) {
     }
 }
 
+def getLatestBackup(backupDir) {
+    try {
+        def latestFile = null
+        def latestModifiedTime = 0
+
+        // Сначала проверим, существует ли директория
+        if (!Files.exists(Paths.get(backupDir)) || !Files.isDirectory(Paths.get(backupDir))) {
+            throw new IllegalArgumentException("Backup directory does not exist or is not a directory: ${backupDir}")
+        }
+
+        // Получаем список файлов в директории
+        List<Path> files = Files.list(Paths.get(backupDir)).collect(Collectors.toList())
+
+        if (files.isEmpty()) {
+            throw new IllegalArgumentException("No backup files found in directory: ${backupDir}")
+        }
+
+        files.each { filePath ->
+            def attrs = Files.readAttributes(filePath, BasicFileAttributes.class)
+            def lastModifiedTime = attrs.lastModifiedTime().toMillis()
+
+            if (latestFile == null || lastModifiedTime > latestModifiedTime) {
+                latestFile = filePath
+                latestModifiedTime = lastModifiedTime
+            }
+        }
+        echo "Latest backup file: ${latestFile}"
+        return latestFile
+    } catch (Exception e) {
+        echo "Exception in getLatestBackup: ${e.message}"
+        throw e
+    }
+}
+
+
+
 // Восстанавливает базу из бекапа
 //
 // Параметры:
@@ -153,7 +156,12 @@ def restoreDb(dbServer, infobase, backupDir, sqlUser, sqlPwd) {
     }
 
     def latestBackup = getLatestBackup(backupDir)
- 
+    def command = "sqlcmd -S localhost -U sa -P bVeqxLh7btw87z7d -i \"C:\\Users\\Support1c\\AppData\\Local\\Jenkins\\.jenkins\\workspace\\erp_features\\copy_etalon\\restore.sql\" -b -v restoreddb=test_erp_test -v bakfile=\"\\\\rs-backup\\erp_backup\\erp_w_001\\erp_w_001_backup_2023_12_25_230001_0904933.bak\""
+    echo "Executing command work: ${command}"
+    def command2 = "sqlcmd -S ${dbServer} ${sqlUserpath} ${sqlPwdPath} -i \"${env.WORKSPACE}/copy_etalon/restore.sql\" -b -v restoreddb =${infobase} -v bakfile=\"${latestBackup}\""
+    echo "Executing command work: ${command2}"
+
+
     returnCode = utils.cmd("sqlcmd -S ${dbServer} ${sqlUserpath} ${sqlPwdPath} -i \"${env.WORKSPACE}/copy_etalon/restore.sql\" -b -v restoreddb =${infobase} -v bakfile=\"${latestBackup}\"")
     if (returnCode != 0) {
          utils.raiseError("Возникла ошибка при восстановлении базы из sql бекапа ${dbServer}\\${infobase}. Для подробностей смотрите логи")
