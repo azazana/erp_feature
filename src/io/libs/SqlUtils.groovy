@@ -1,4 +1,5 @@
 package io.libs;
+import java.nio.file.*
 
 // Проверяет соединение к БД и наличие базы
 //
@@ -28,6 +29,26 @@ def checkDb(dbServer, infobase, sqlUser, sqlPwd) {
         utils.raiseError("Возникла ошибка при при проверке соединения к sql базе ${dbServer}\\${infobase}. Для подробностей смотрите логи")
     }
 }
+
+
+
+def getLatestBackup(backupDir) {
+    def latestFile = null
+    def latestModifiedTime = 0
+
+    Files.list(Paths.get(backupDir)).each { filePath ->
+        def attrs = Files.readAttributes(filePath, BasicFileAttributes.class)
+        def lastModifiedTime = attrs.lastModifiedTime().toMillis()
+
+        if (latestFile == null || lastModifiedTime > latestModifiedTime) {
+            latestFile = filePath
+            latestModifiedTime = lastModifiedTime
+        }
+    }
+
+    return latestFile
+}
+
 
 // Создает бекап базы по пути указанному в параметре backupPath
 //
@@ -98,7 +119,7 @@ def createEmptyDb(dbServer, infobase, sqlUser, sqlPwd) {
 //  sqlUser - Необязательный. админ sql базы
 //  sqlPwd - Необязательный. пароль админа sql базы
 //
-def restoreDb(dbServer, infobase, backupPath, sqlUser, sqlPwd) {
+def restoreDb(dbServer, infobase, backupDir, sqlUser, sqlPwd) {
     utils = new Utils()
 
     sqlUserpath = "" 
@@ -113,7 +134,7 @@ def restoreDb(dbServer, infobase, backupPath, sqlUser, sqlPwd) {
         sqlPwdPath = "-P ${sqlPwd}"
     }
 
-    returnCode = utils.cmd("sqlcmd -S ${dbServer} ${sqlUserpath} ${sqlPwdPath} -i \"${env.WORKSPACE}/copy_etalon/restore.sql\" -b -v restoreddb =${infobase} -v bakfile=\"${backupPath}\"")
+    returnCode = utils.cmd("sqlcmd -S ${dbServer} ${sqlUserpath} ${sqlPwdPath} -i \"${env.WORKSPACE}/copy_etalon/restore.sql\" -b -v restoreddb =${infobase} -v bakfile=\"${getLatestBackup(backupDir)}\"")
     if (returnCode != 0) {
          utils.raiseError("Возникла ошибка при восстановлении базы из sql бекапа ${dbServer}\\${infobase}. Для подробностей смотрите логи")
     } 
