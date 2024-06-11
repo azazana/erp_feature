@@ -167,7 +167,7 @@ def updateInfobase(connString, admin1cUser, admin1cPassword, platform) {
 
 def bindRepo(platform1c, server1c, testbase, admin1cUser, admin1cPwd, storage1cPath, storageUser, storagePwd) {
     utils = new Utils()
-    returnCode = utils.cmd("oscript one_script_tools/bindRepo.os -platform ${platform1c} -server ${server1c} -base ${testbase} -user ${admin1cUser} -passw ${admin1cPwd} -storage1c ${storage1cPath} -storage1cuser ${storageUser} -storage1cpwd 1")
+    returnCode = utils.cmd("oscript one_script_tools/bindRepo.os -platform ${platform1c} -server ${server1c} -base ${testbase} -user ${admin1cUser} -passw ${admin1cPwd} -storage1c ${storage1cPath} -storage1cuser ${storageUser} -storage1cpwd")
     if (returnCode != 0) {
         utils.raiseError("Возникла ошибка при подключении ${testbase}  к хранилищу")
     }
