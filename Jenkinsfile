@@ -310,14 +310,14 @@ def bindReposTask(platform1c, server1c, testbase, admin1cUser, admin1cPwd, stora
   return {
         stage("Подключение и обновление из хранилища ${testbase}") {
             timestamps {
-                // prHelpers = new ProjectHelpers()
+                prHelpers = new ProjectHelpers()
 
-                // if (storage1cPath == null || storage1cPath.isEmpty()) {
-                //     return
-                // }    
+                if (storage1cPath == null || storage1cPath.isEmpty()) {
+                    return
+                }    
                 echo "обновление из хранилища началось bindRepo"
                 
-                // prHelpers.bindRepo(platform, server, base, user, passw, storage1c, storage1cuser, storage1cpwd)
+                prHelpers.bindRepo(platform1c, server1c, testbase, admin1cUser, admin1cPwd, storage1cPath, storageUser, storagePwd)
 
             }
         }
