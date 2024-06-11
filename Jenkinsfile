@@ -116,15 +116,18 @@ pipeline {
                                 testbase
                             )
                             // 5. Обновляем тестовую базу из хранилища 1С (если применимо)
-                            updateDbTasks["updateTask_${testbase}"] = updateDbTask(
-                                platform1c,
-                                testbase, 
-                                storage1cPath, 
-                                storageUser, 
-                                storagePwd, 
-                                testbaseConnString, 
-                                admin1cUser, 
-                                admin1cPwd
+                            // updateDbTasks["updateTask_${testbase}"] = updateDbTask(
+                            //     platform1c,
+                            //     testbase, 
+                            //     storage1cPath, 
+                            //     storageUser, 
+                            //     storagePwd, 
+                            //     testbaseConnString, 
+                            //     admin1cUser, 
+                            //     admin1cPwd
+                            // )
+                            bindRepo["bindRepo_${testbase}"] = bindRepo(
+                                platform, server, base, user, passw, storage1c, storage1cuser, storage1cpwd
                             )
                             // 6. Запускаем внешнюю обработку 1С, которая очищает базу от всплывающего окна с тем, что база перемещена при старте 1С
                             runHandlers1cTasks["runHandlers1cTask_${testbase}"] = runHandlers1cTask(
@@ -293,6 +296,23 @@ def updateDbTask(platform1c, infobase, storage1cPath, storageUser, storagePwd, c
 
                 prHelpers.loadCfgFrom1CStorage(storage1cPath, storageUser, storagePwd, connString, admin1cUser, admin1cPwd, platform1c)
                 prHelpers.updateInfobase(connString, admin1cUser, admin1cPwd, platform1c)
+            }
+        }
+    }
+}
+
+def bindRepo(platform, server, base, user, passw, storage1c, storage1cuser, storage1cpwd) {
+  return {
+        stage("Подключение и обновление из хранилища ${infobase}") {
+            timestamps {
+                prHelpers = new ProjectHelpers()
+
+                if (storage1cPath == null || storage1cPath.isEmpty()) {
+                    return
+                }    
+                
+                prHelpers.bindRepo(platform, server, base, user, passw, storage1c, storage1cuser, storage1cpwd)
+
             }
         }
     }
