@@ -11,9 +11,9 @@ def restoreTasks = [:]
 def checkPaths = [:]
 def dropDbTasks = [:]
 def createDbTasks = [:]
+def bindReposTasks = [:]
 def runHandlers1cTasks = [:]
 // def updateDbTasks = [:]
-// def bindRepos = [:]
 
 pipeline {
 
@@ -127,9 +127,12 @@ pipeline {
                             //     admin1cUser, 
                             //     admin1cPwd
                             // )
-                            // bindRepos["bindRepo_${testbase}"] = bindRepo(
-                                // platform1c, server1c, testbase, admin1cUser, admin1cPwd, storage1cPath, storageUser, storagePwd 
-                            // )                          
+
+                            //4. Подключаем базу к ханилищу.
+                            bindReposTasks["bindRepo_${testbase}"] = bindReposTask(
+                                platform1c, server1c, testbase, admin1cUser, admin1cPwd, storage1cPath, storageUser, storagePwd 
+                            )   
+
                              // 6. Запускаем внешнюю обработку 1С, которая очищает базу от всплывающего окна с тем, что база перемещена при старте 1С
                             runHandlers1cTasks["runHandlers1cTask_${testbase}"] = runHandlers1cTask(
                                 testbase, 
@@ -144,7 +147,7 @@ pipeline {
                         parallel restoreTasks
                         parallel createDbTasks
                         //parallel updateDbTasks
-                        // parallel bindRepos
+                        parallel bindReposTasks
                         parallel runHandlers1cTasks
                     }
                 }
@@ -303,7 +306,7 @@ def updateDbTask(platform1c, infobase, storage1cPath, storageUser, storagePwd, c
     }
 }
 
-def bindRepo(platform, server, base, user, passw, storage1c, storage1cuser, storage1cpwd) {
+def bindReposTask(platform, server, base, user, passw, storage1c, storage1cuser, storage1cpwd) {
   return {
         stage("Подключение и обновление из хранилища ${infobase}") {
             timestamps {
