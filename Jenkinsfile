@@ -135,6 +135,7 @@ pipeline {
                             //     sqlUser,
                             //     sqlPwd
                             // )
+                           
                             // 3. Загружаем sql бекап эталонной базы в тестовую
                             restoreTasks["restoreTask_${testbase}"] = restoreTask(
                                 serverSql, 
