@@ -13,7 +13,6 @@ def createDbTasks = [:]
 def bindReposTasks = [:]
 def bindReposExtTasks = [:]
 def runHandlers1cTasks = [:]
-// def updateDbTasks = [:]
 
 pipeline {
 
@@ -81,48 +80,47 @@ pipeline {
                             storage1cPath = storages1cPathList[i]
                             testbase = "${templateDb}"
                             testbaseConnString = projectHelpers.getConnString(server1c, testbase, agent1cPort)
-                            backupPath = "${env.WORKSPACE}/build/temp_${templateDb}_${utils.currentDateStamp()}"
                             backupDir = backupDir.isEmpty() ? "${env.WORKSPACE}/build/" : backupDir
                             
-                            // 1. Удаляем тестовую базу из кластера (если он там была) и очищаем клиентский кеш 1с
-                            dropDbTasks["dropDbTask_${testbase}"] = dropDbTask(
-                                server1c, 
-                                server1cPort, 
-                                serverSql, 
-                                testbase, 
-                                admin1cUser, 
-                                admin1cPwd,
-                                sqluser,
-                                sqlPwd
-                            )
+                            // // 1. Удаляем тестовую базу из кластера (если он там была) и очищаем клиентский кеш 1с
+                            // dropDbTasks["dropDbTask_${testbase}"] = dropDbTask(
+                            //     server1c, 
+                            //     server1cPort, 
+                            //     serverSql, 
+                            //     testbase, 
+                            //     admin1cUser, 
+                            //     admin1cPwd,
+                            //     sqluser,
+                            //     sqlPwd
+                            // )
                            
-                            // 2. Загружаем последний бэкап sql в тестовую
-                            restoreTasks["restoreTask_${testbase}"] = restoreTask(
-                                serverSql, 
-                                testbase, 
-                                backupDir,
-                                sqlUser,
-                                sqlPwd
-                            )
-                            // 3. Создаем тестовую базу кластере 1С
-                            createDbTasks["createDbTask_${testbase}"] = createDbTask(
-                                "${server1c}:${agent1cPort}",
-                                serverSql,
-                                platform1c,
-                                testbase
-                            )
+                            // // 2. Загружаем последний бэкап sql в тестовую
+                            // restoreTasks["restoreTask_${testbase}"] = restoreTask(
+                            //     serverSql, 
+                            //     testbase, 
+                            //     backupDir,
+                            //     sqlUser,
+                            //     sqlPwd
+                            // )
+                            // // 3. Создаем тестовую базу кластере 1С
+                            // createDbTasks["createDbTask_${testbase}"] = createDbTask(
+                            //     "${server1c}:${agent1cPort}",
+                            //     serverSql,
+                            //     platform1c,
+                            //     testbase
+                            // )
 
-                            //4. Подключаем базу к хранилищу.
-                            bindReposTasks["bindReposTask_${testbase}"] = bindReposTask(
-                                platform1c, server1c, testbase, admin1cUser, admin1cPwd, storage1cPath, storageUser, storagePwd 
-                            ) 
+                            // //4. Подключаем базу к хранилищу.
+                            // bindReposTasks["bindReposTask_${testbase}"] = bindReposTask(
+                            //     platform1c, server1c, testbase, admin1cUser, admin1cPwd, storage1cPath, storageUser, storagePwd 
+                            // ) 
                             
-                            //4. Подключаем базу к расширению хранилищу.
-                            bindReposExtTasks["bindReposExtTask_${testbase}"] = bindReposExtTask(
-                                platform1c, server1c, testbase, admin1cUser, admin1cPwd, storages1cPathExt, storageUser, storagePwd, ext
-                            )   
+                            // //4. Подключаем базу к расширению хранилищу.
+                            // bindReposExtTasks["bindReposExtTask_${testbase}"] = bindReposExtTask(
+                            //     platform1c, server1c, testbase, admin1cUser, admin1cPwd, storages1cPathExt, storageUser, storagePwd, ext
+                            // )   
 
-                             // 6. Запускаем внешнюю обработку 1С, которая очищает базу от всплывающего окна с тем, что база перемещена при старте 1С
+                             // 5. Запускаем внешнюю обработку 1С, которая очищает базу от всплывающего окна с тем, что база перемещена при старте 1С
                             runHandlers1cTasks["runHandlers1cTask_${testbase}"] = runHandlers1cTask(
                                 testbase, 
                                 admin1cUser, 
@@ -134,7 +132,6 @@ pipeline {
                         parallel dropDbTasks
                         parallel restoreTasks
                         parallel createDbTasks
-                        //parallel updateDbTasks
                         parallel bindReposTasks
                         parallel bindReposExtTasks
                         parallel runHandlers1cTasks
@@ -172,6 +169,21 @@ pipeline {
                             utils.raiseError("Возникла ошибка при запуске ADD на сервере ${server1c} и базе ${testbase}")
                         }
                     }
+                }
+            }
+        }
+        stage("Шринкуем базу и делаем бэкап") {
+            steps {
+                timestamps {
+                    script {
+                        def sqlUtils = new sqlUtils()
+                        
+                        try {
+                            sqlUtils.shrink_db(testbase, serverSql, backupDir, sqlUser, sqlPwd)
+                        } catch (excp) {
+                            echo "Error happened when shrink base ${testbase}."
+                        }
+                        }
                 }
             }
         }

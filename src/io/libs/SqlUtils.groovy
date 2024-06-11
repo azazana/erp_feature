@@ -178,3 +178,26 @@ def clearBackups(backup_path) {
         echo "Error when deleting file: ${backup_path}"
     }    
 }
+
+def shrink_db(infobase, dbServer, backupDir, sqlUser, sqlPwd) {
+    utils = new Utils()
+
+    sqlUserpath = "" 
+    if (sqlUser != null && !sqlUser.isEmpty()) {
+        sqlUserpath = "-U ${sqlUser}"
+    } else {
+        sqlUserpath = "-E"
+    }
+    sqlPwdPath = "" 
+    if (sqlPwd != null && !sqlPwd.isEmpty()) {
+        sqlPwdPath = "-P ${sqlPwd}"
+    }
+
+    def latestBackup = getLatestBackup(backupDir)
+
+    returnCode = utils.cmd("sqlcmd -S ${dbServer} ${sqlUserpath} ${sqlPwdPath} -i \"${env.WORKSPACE}/copy_etalon/shrink_db.sql\" -b -v restoreddb =${infobase} -v bakfile=\"${latestBackup}\"")
+    if (returnCode != 0) {
+         utils.raiseError("Возникла ошибка при обрезании базы из sql бекапа ${dbServer}\\${infobase}. Для подробностей смотрите логи")
+    } 
+ 
+}
