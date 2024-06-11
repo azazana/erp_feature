@@ -101,13 +101,13 @@ pipeline {
                             // )
                            
                             // 3. Загружаем sql бекап эталонной базы в тестовую
-                            restoreTasks["restoreTask_${testbase}"] = restoreTask(
-                                serverSql, 
-                                testbase, 
-                                backupDir,
-                                sqlUser,
-                                sqlPwd
-                            )
+                            // restoreTasks["restoreTask_${testbase}"] = restoreTask(
+                            //     serverSql, 
+                            //     testbase, 
+                            //     backupDir,
+                            //     sqlUser,
+                            //     sqlPwd
+                            // )
                             // 4. Создаем тестовую базу кластере 1С
                             createDbTasks["createDbTask_${testbase}"] = createDbTask(
                                 "${server1c}:${agent1cPort}",
