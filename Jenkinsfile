@@ -12,7 +12,7 @@ def checkPaths = [:]
 def dropDbTasks = [:]
 def createDbTasks = [:]
 def runHandlers1cTasks = [:]
-def updateDbTasks = [:]
+// def updateDbTasks = [:]
 def bindRepos = [:]
 
 pipeline {
@@ -128,9 +128,9 @@ pipeline {
                             //     admin1cPwd
                             // )
                             bindRepos["bindRepo_${testbase}"] = bindRepo(
-                                platform, server, base, user, passw, storage1c, storage1cuser, storage1cpwd
-                            )
-                            // 6. Запускаем внешнюю обработку 1С, которая очищает базу от всплывающего окна с тем, что база перемещена при старте 1С
+                                platform1c, server1c, testbase, admin1cUser, admin1cPwd, storage1cPath, storageUser, storagePwd 
+                            )                          
+                             // 6. Запускаем внешнюю обработку 1С, которая очищает базу от всплывающего окна с тем, что база перемещена при старте 1С
                             runHandlers1cTasks["runHandlers1cTask_${testbase}"] = runHandlers1cTask(
                                 testbase, 
                                 admin1cUser, 
@@ -313,6 +313,7 @@ def bindRepo(platform, server, base, user, passw, storage1c, storage1cuser, stor
                 if (storage1cPath == null || storage1cPath.isEmpty()) {
                     return
                 }    
+                echo "обновление из хранилища началось bindRepo"
                 
                 prHelpers.bindRepo(platform, server, base, user, passw, storage1c, storage1cuser, storage1cpwd)
 
