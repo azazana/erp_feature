@@ -6,7 +6,6 @@ import io.libs.Utils
 def sqlUtils = new SqlUtils()
 def utils = new Utils()
 def projectHelpers = new ProjectHelpers()
-def backupTasks = [:]
 def restoreTasks = [:]
 def checkPaths = [:]
 def dropDbTasks = [:]
@@ -80,61 +79,43 @@ pipeline {
                         for (i = 0;  i < templatebasesList.size(); i++) {
                             templateDb = templatebasesList[i]
                             storage1cPath = storages1cPathList[i]
-                            testbase = "test_${templateDb}"
+                            testbase = "${templateDb}"
                             testbaseConnString = projectHelpers.getConnString(server1c, testbase, agent1cPort)
                             backupPath = "${env.WORKSPACE}/build/temp_${templateDb}_${utils.currentDateStamp()}"
                             backupDir = backupDir.isEmpty() ? "${env.WORKSPACE}/build/" : backupDir
+                            
                             // 1. Удаляем тестовую базу из кластера (если он там была) и очищаем клиентский кеш 1с
-                            // dropDbTasks["dropDbTask_${testbase}"] = dropDbTask(
-                            //     server1c, 
-                            //     server1cPort, 
-                            //     serverSql, 
-                            //     testbase, 
-                            //     admin1cUser, 
-                            //     admin1cPwd,
-                            //     sqluser,
-                            //     sqlPwd
-                            // )
-                            // // 2. Делаем sql бекап эталонной базы, которую будем загружать в тестовую базу
-                            // backupTasks["backupTask_${templateDb}"] = backupTask(
-                            //     serverSql, 
-                            //     templateDb, 
-                            //     backupPath,
-                            //     sqlUser,
-                            //     sqlPwd
-                            // )
+                            dropDbTasks["dropDbTask_${testbase}"] = dropDbTask(
+                                server1c, 
+                                server1cPort, 
+                                serverSql, 
+                                testbase, 
+                                admin1cUser, 
+                                admin1cPwd,
+                                sqluser,
+                                sqlPwd
+                            )
                            
-                            // 3. Загружаем sql бекап эталонной базы в тестовую
-                            // restoreTasks["restoreTask_${testbase}"] = restoreTask(
-                            //     serverSql, 
-                            //     testbase, 
-                            //     backupDir,
-                            //     sqlUser,
-                            //     sqlPwd
-                            // )
-                            // 4. Создаем тестовую базу кластере 1С
-                            // createDbTasks["createDbTask_${testbase}"] = createDbTask(
-                            //     "${server1c}:${agent1cPort}",
-                            //     serverSql,
-                            //     platform1c,
-                            //     testbase
-                            // )
-                            // 5. Обновляем тестовую базу из хранилища 1С (если применимо)
-                            // updateDbTasks["updateTask_${testbase}"] = updateDbTask(
-                            //     platform1c,
-                            //     testbase, 
-                            //     storage1cPath, 
-                            //     storageUser, 
-                            //     storagePwd, 
-                            //     testbaseConnString, 
-                            //     admin1cUser, 
-                            //     admin1cPwd
-                            // )
+                            // 2. Загружаем последний бэкап sql в тестовую
+                            restoreTasks["restoreTask_${testbase}"] = restoreTask(
+                                serverSql, 
+                                testbase, 
+                                backupDir,
+                                sqlUser,
+                                sqlPwd
+                            )
+                            // 3. Создаем тестовую базу кластере 1С
+                            createDbTasks["createDbTask_${testbase}"] = createDbTask(
+                                "${server1c}:${agent1cPort}",
+                                serverSql,
+                                platform1c,
+                                testbase
+                            )
 
                             //4. Подключаем базу к хранилищу.
-                            // bindReposTasks["bindReposTask_${testbase}"] = bindReposTask(
-                            //     platform1c, server1c, testbase, admin1cUser, admin1cPwd, storage1cPath, storageUser, storagePwd 
-                            // ) 
+                            bindReposTasks["bindReposTask_${testbase}"] = bindReposTask(
+                                platform1c, server1c, testbase, admin1cUser, admin1cPwd, storage1cPath, storageUser, storagePwd 
+                            ) 
                             
                             //4. Подключаем базу к расширению хранилищу.
                             bindReposExtTasks["bindReposExtTask_${testbase}"] = bindReposExtTask(
@@ -151,7 +132,6 @@ pipeline {
                         }
 
                         parallel dropDbTasks
-                        parallel backupTasks
                         parallel restoreTasks
                         parallel createDbTasks
                         //parallel updateDbTasks
@@ -241,38 +221,6 @@ def createDbTask(server1c, serverSql, platform1c, infobase) {
         }
     }
 }
-def checkPath() {
-    return {    
-        stage('Check Access Rights') {
-           timestamps {
-                    def backupDir = "\\\\rs-backup\\erp_backup\\erp_w_001"
-                    def restoreFile = "C:\\Users\\Support1c\\AppData\\Local\\Jenkins\\.jenkins\\workspace\\erp_features\\copy_etalon\\restore.sql"
-
-                    // Использование bat для проверки доступа к файлам и директориям
-                    echo "Checking access to backup directory: ${backupDir}"
-                    bat "if not exist ${backupDir} (echo 'Backup directory does not exist: ${backupDir}' && exit /b 1) else echo 'Backup directory exists: ${backupDir}'"
-                    bat "dir ${backupDir}"
-
-                    echo "Checking access to restore file: ${restoreFile}"
-                    bat "if not exist ${restoreFile} (echo 'Restore file does not exist: ${restoreFile}' && exit /b 1) else echo 'Restore file exists: ${restoreFile}'"
-                    bat "dir ${restoreFile}"
-                }
-        }
-    }
-}   
-
-// def backupTask(serverSql, infobase, backupPath, sqlUser, sqlPwd) {
-//     return {
-//         stage("sql бекап ${infobase}") {
-//             timestamps {
-//                 def sqlUtils = new SqlUtils()
-
-//                 sqlUtils.checkDb(serverSql, infobase, sqlUser, sqlPwd)
-//                 sqlUtils.backupDb(serverSql, infobase, backupPath, sqlUser, sqlPwd)
-//             } 
-//         }
-//     }
-// }
 
 def restoreTask(serverSql, infobase, backupDir, sqlUser, sqlPwd) {
     return {
@@ -298,22 +246,7 @@ def runHandlers1cTask(infobase, admin1cUser, admin1cPwd, testbaseConnString) {
     }
 }
 
-def updateDbTask(platform1c, infobase, storage1cPath, storageUser, storagePwd, connString, admin1cUser, admin1cPwd) {
-    return {
-        stage("Загрузка из хранилища ${infobase}") {
-            timestamps {
-                prHelpers = new ProjectHelpers()
 
-                if (storage1cPath == null || storage1cPath.isEmpty()) {
-                    return
-                }
-
-                prHelpers.loadCfgFrom1CStorage(storage1cPath, storageUser, storagePwd, connString, admin1cUser, admin1cPwd, platform1c)
-                prHelpers.updateInfobase(connString, admin1cUser, admin1cPwd, platform1c)
-            }
-        }
-    }
-}
 
 def bindReposTask(platform1c, server1c, testbase, admin1cUser, admin1cPwd, storage1cPath, storageUser, storagePwd) {
   return {
