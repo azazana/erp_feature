@@ -53,7 +53,7 @@ def unlocking1cBase(connString, admin1cUsr, admin1cPwd) {
     if (admin1cPwd != null && !admin1cPwd.isEmpty()) {
         admin1cPwdLine = "--db-pwd ${admin1cPwd}"
     }
-
+    echo "runner run --execute ${env.WORKSPACE}/one_script_tools/unlockBase1C.epf --command \"-locktype unlock\" ${admin1cUsrLine} ${admin1cPwdLine} --ibconnection=${connString}"
     utils.cmd("runner run --execute ${env.WORKSPACE}/one_script_tools/unlockBase1C.epf --command \"-locktype unlock\" ${admin1cUsrLine} ${admin1cPwdLine} --ibconnection=${connString}")
 }
 
