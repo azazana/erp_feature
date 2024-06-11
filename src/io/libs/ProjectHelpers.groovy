@@ -165,11 +165,11 @@ def updateInfobase(connString, admin1cUser, admin1cPassword, platform) {
     }
 }
 
-def bindRepo(platform, server, base, user, passw, storage1c, storage1cuser, storage1cpwd) {
-    echo "oscript one_script_tools/dbcreator.os ${platformLine} -server ${server} -base ${base} -user ${user} -passw ${passw} -storage1c ${storage1c} -storage1cuser ${storage1cuser} -storage1cpwd ${storage1cpwd}"
-    returnCode = utils.cmd("oscript one_script_tools/dbcreator.os ${platformLine} -server ${server} -base ${base} -user ${user} -passw ${passw} -storage1c ${storage1c} -storage1cuser ${storage1cuser} -storage1cpwd ${storage1cpwd}")
-    if (returnCode != 0) {
-        utils.raiseError("Возникла ошибка при подключении ${base} в кластере ${serversql}")
-    }
+// def bindRepo(platform, server, base, user, passw, storage1c, storage1cuser, storage1cpwd) {
+//     echo "oscript one_script_tools/dbcreator.os ${platformLine} -server ${server} -base ${base} -user ${user} -passw ${passw} -storage1c ${storage1c} -storage1cuser ${storage1cuser} -storage1cpwd ${storage1cpwd}"
+//     returnCode = utils.cmd("oscript one_script_tools/dbcreator.os ${platformLine} -server ${server} -base ${base} -user ${user} -passw ${passw} -storage1c ${storage1c} -storage1cuser ${storage1cuser} -storage1cpwd ${storage1cpwd}")
+//     if (returnCode != 0) {
+//         utils.raiseError("Возникла ошибка при подключении ${base} в кластере ${serversql}")
+//     }
 
-}
+// }
