@@ -34,6 +34,7 @@ pipeline {
         string(defaultValue: "${env.storageUser}", description: 'Необязательный. Администратор хранилищ  1C. Должен быть одинаковым для всех хранилищ', name: 'storageUser')
         string(defaultValue: "${env.storagePwd}", description: 'Необязательный. Пароль администратора хранилищ 1c', name: 'storagePwd')
         string(defaultValue: "${env.backupDir}", description: 'Путь к бэкапам сетевым', name: 'backupDir')
+        string(defaultValue: "${env.storages1cPathExt}", description: 'Путь к хранилищу расширения', name: 'storages1cPathExt')
         string(defaultValue: "${env.ext}", description: 'Название расширения', name: 'ext')
     }
 
@@ -137,7 +138,7 @@ pipeline {
                             
                             //4. Подключаем базу к расширению хранилищу.
                             bindReposExtTasks["bindReposExtTask_${testbase}"] = bindReposExtTask(
-                                platform1c, server1c, testbase, admin1cUser, admin1cPwd, storage1cPath, storageUser, storagePwd, ext
+                                platform1c, server1c, testbase, admin1cUser, admin1cPwd, storages1cPathExt, storageUser, storagePwd, ext
                             )   
 
                              // 6. Запускаем внешнюю обработку 1С, которая очищает базу от всплывающего окна с тем, что база перемещена при старте 1С
