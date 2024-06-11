@@ -165,11 +165,11 @@ def updateInfobase(connString, admin1cUser, admin1cPassword, platform) {
     }
 }
 
-def bindRepo(platform, server, base, user, passw, storage1c, storage1cuser, storage1cpwd) {
-    echo "oscript one_script_tools/bindRepo.os ${platformLine} -server ${server} -base ${base} -user ${user} -passw ${passw} -storage1c ${storage1c} -storage1cuser ${storage1cuser} -storage1cpwd ${storage1cpwd}"
-    returnCode = utils.cmd("oscript one_script_tools/bindRepo.os ${platformLine} -server ${server} -base ${base} -user ${user} -passw ${passw} -storage1c ${storage1c} -storage1cuser ${storage1cuser} -storage1cpwd ${storage1cpwd}")
+def bindRepo(platform1c, server1c, testbase, admin1cUser, admin1cPwd, storage1cPath, storageUser, storagePwd) {
+    echo "oscript one_script_tools/bindRepo.os ${platform1c} -server ${server1c} -base ${testbase} -user ${admin1cUser} -passw ${admin1cPwd} -storage1c ${storage1cPath} -storage1cuser ${storageUser} -storage1cpwd ${storagePwd}"
+    returnCode = utils.cmd("oscript one_script_tools/bindRepo.os ${platform1c} -server ${server1c} -base ${testbase} -user ${admin1cUser} -passw ${admin1cPwd} -storage1c ${storage1cPath} -storage1cuser ${storageUser} -storage1cpwd ${storagePwd}")
     if (returnCode != 0) {
-        utils.raiseError("Возникла ошибка при подключении ${base} в кластере ${serversql}")
+        utils.raiseError("Возникла ошибка при подключении ${testbase}  к хранилищу")
     }
 
 }
