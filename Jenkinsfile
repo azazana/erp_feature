@@ -176,8 +176,6 @@ pipeline {
             steps {
                 timestamps {
                     script {
-                        def sqlUtils = new sqlUtils()
-                        
                         try {
                             sqlUtils.shrink_db(testbase, serverSql, backupDir, sqlUser, sqlPwd)
                         } catch (excp) {
