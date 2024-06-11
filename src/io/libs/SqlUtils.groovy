@@ -141,21 +141,21 @@ def getLatestBackup(backupDir) {
 //  sqlPwd - Необязательный. пароль админа sql базы
 //
 def restoreDb(dbServer, infobase, backupDir, sqlUser, sqlPwd) {
-    utils = new Utils()
+    // utils = new Utils()
 
-    sqlUserpath = "" 
-    if (sqlUser != null && !sqlUser.isEmpty()) {
-        sqlUserpath = "-U ${sqlUser}"
-    } else {
-        sqlUserpath = "-E"
-    }
+    // sqlUserpath = "" 
+    // if (sqlUser != null && !sqlUser.isEmpty()) {
+    //     sqlUserpath = "-U ${sqlUser}"
+    // } else {
+    //     sqlUserpath = "-E"
+    // }
 
-    sqlPwdPath = "" 
-    if (sqlPwd != null && !sqlPwd.isEmpty()) {
-        sqlPwdPath = "-P ${sqlPwd}"
-    }
+    // sqlPwdPath = "" 
+    // if (sqlPwd != null && !sqlPwd.isEmpty()) {
+    //     sqlPwdPath = "-P ${sqlPwd}"
+    // }
 
-    def latestBackup = getLatestBackup(backupDir)
+    // def latestBackup = getLatestBackup(backupDir)
     // def command = "sqlcmd -S localhost -U sa -P bVeqxLh7btw87z7d -i \"C:\\Users\\Support1c\\AppData\\Local\\Jenkins\\.jenkins\\workspace\\erp_features\\copy_etalon\\restore.sql\" -b -v restoreddb=test_erp_test -v bakfile=\"\\\\rs-backup\\erp_backup\\erp_w_001\\erp_w_001_backup_2023_12_25_230001_0904933.bak\""
     // def command = "sqlcmd -S localhost -U sa -P bVeqxLh7btw87z7d -i \"C:\\Users\\Support1c\\AppData\\Local\\Jenkins\\.jenkins\\workspace\\erp_features\\copy_etalon\\restore.sql\" -b -v restoreddb=test_erp_test -v bakfile=\"\\\\rs-backup\\erp_backup\\erp_w_001\\erp_w_001_backup_2023_12_25_230001_0904933.bak\""
     // echo "Executing command work: ${command}"
