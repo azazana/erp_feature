@@ -121,7 +121,7 @@ def getLatestBackup(backupDir) {
             }
         }
         echo "Latest backup file: ${latestFile}"
-        return latestFile
+        return ""+latestFile
     } catch (Exception e) {
         echo "Exception in getLatestBackup: ${e.message}"
         throw e
