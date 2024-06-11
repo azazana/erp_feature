@@ -84,16 +84,16 @@ pipeline {
                             backupPath = "${env.WORKSPACE}/build/temp_${templateDb}_${utils.currentDateStamp()}"
                             backupDir = backupDir.isEmpty() ? "${env.WORKSPACE}/build/" : backupDir
                             // 1. Удаляем тестовую базу из кластера (если он там была) и очищаем клиентский кеш 1с
-                            dropDbTasks["dropDbTask_${testbase}"] = dropDbTask(
-                                server1c, 
-                                server1cPort, 
-                                serverSql, 
-                                testbase, 
-                                admin1cUser, 
-                                admin1cPwd,
-                                sqluser,
-                                sqlPwd
-                            )
+                            // dropDbTasks["dropDbTask_${testbase}"] = dropDbTask(
+                            //     server1c, 
+                            //     server1cPort, 
+                            //     serverSql, 
+                            //     testbase, 
+                            //     admin1cUser, 
+                            //     admin1cPwd,
+                            //     sqluser,
+                            //     sqlPwd
+                            // )
                             // // 2. Делаем sql бекап эталонной базы, которую будем загружать в тестовую базу
                             // backupTasks["backupTask_${templateDb}"] = backupTask(
                             //     serverSql, 
@@ -112,12 +112,12 @@ pipeline {
                             //     sqlPwd
                             // )
                             // 4. Создаем тестовую базу кластере 1С
-                            createDbTasks["createDbTask_${testbase}"] = createDbTask(
-                                "${server1c}:${agent1cPort}",
-                                serverSql,
-                                platform1c,
-                                testbase
-                            )
+                            // createDbTasks["createDbTask_${testbase}"] = createDbTask(
+                            //     "${server1c}:${agent1cPort}",
+                            //     serverSql,
+                            //     platform1c,
+                            //     testbase
+                            // )
                             // 5. Обновляем тестовую базу из хранилища 1С (если применимо)
                             // updateDbTasks["updateTask_${testbase}"] = updateDbTask(
                             //     platform1c,
