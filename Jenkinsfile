@@ -305,18 +305,17 @@ def updateDbTask(platform1c, infobase, storage1cPath, storageUser, storagePwd, c
 }
 
 def bindRepo(platform, server, base, user, passw, storage1c, storage1cuser, storage1cpwd) {
-echo "обновление из хранилища началось bindRepo1"
   return {
         stage("Подключение и обновление из хранилища ${infobase}") {
             timestamps {
-                prHelpers = new ProjectHelpers()
+                // prHelpers = new ProjectHelpers()
 
-                if (storage1cPath == null || storage1cPath.isEmpty()) {
-                    return
-                }    
-                echo "обновление из хранилища началось bindRepo"
+                // if (storage1cPath == null || storage1cPath.isEmpty()) {
+                //     return
+                // }    
+                // echo "обновление из хранилища началось bindRepo"
                 
-                prHelpers.bindRepo(platform, server, base, user, passw, storage1c, storage1cuser, storage1cpwd)
+                // prHelpers.bindRepo(platform, server, base, user, passw, storage1c, storage1cuser, storage1cpwd)
 
             }
         }
