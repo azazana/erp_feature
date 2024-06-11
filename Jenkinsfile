@@ -306,7 +306,7 @@ def updateDbTask(platform1c, infobase, storage1cPath, storageUser, storagePwd, c
     }
 }
 
-def bindReposTask(platform, server, base, user, passw, storage1c, storage1cuser, storage1cpwd) {
+181: def bindReposTask(platform, server, base, user, passw, storage1c, storage1cuser, storage1cpwd) {
   return {
         stage("Подключение и обновление из хранилища ${infobase}") {
             timestamps {
