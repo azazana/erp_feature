@@ -13,6 +13,7 @@ def dropDbTasks = [:]
 def createDbTasks = [:]
 def runHandlers1cTasks = [:]
 def updateDbTasks = [:]
+def bindRepos = [:]
 
 pipeline {
 
@@ -126,7 +127,7 @@ pipeline {
                             //     admin1cUser, 
                             //     admin1cPwd
                             // )
-                            bindRepo["bindRepo_${testbase}"] = bindRepo(
+                            bindRepos["bindRepo_${testbase}"] = bindRepo(
                                 platform, server, base, user, passw, storage1c, storage1cuser, storage1cpwd
                             )
                             // 6. Запускаем внешнюю обработку 1С, которая очищает базу от всплывающего окна с тем, что база перемещена при старте 1С
@@ -142,7 +143,9 @@ pipeline {
                         parallel backupTasks
                         parallel restoreTasks
                         parallel createDbTasks
-                        parallel updateDbTasks
+                        //parallel updateDbTasks
+                        parallel bindRepos
+    
                         parallel runHandlers1cTasks
                     }
                 }
