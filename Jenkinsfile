@@ -129,7 +129,7 @@ pipeline {
                             // )
 
                             //4. Подключаем базу к ханилищу.
-                            bindReposTasks["bindRepo_${testbase}"] = bindReposTask(
+                            bindReposTasks["bindReposTask_${testbase}"] = bindReposTask(
                                 platform1c, server1c, testbase, admin1cUser, admin1cPwd, storage1cPath, storageUser, storagePwd 
                             )   
 
@@ -315,7 +315,7 @@ def bindReposTask(platform, server, base, user, passw, storage1c, storage1cuser,
                 // if (storage1cPath == null || storage1cPath.isEmpty()) {
                 //     return
                 // }    
-                // echo "обновление из хранилища началось bindRepo"
+                echo "обновление из хранилища началось bindRepo"
                 
                 // prHelpers.bindRepo(platform, server, base, user, passw, storage1c, storage1cuser, storage1cpwd)
 
