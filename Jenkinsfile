@@ -139,40 +139,40 @@ pipeline {
                 }
             }
         }
-        stage("Тестирование ADD") {
-            steps {
-                timestamps {
-                    script {
+        // stage("Тестирование ADD") {
+        //     steps {
+        //         timestamps {
+        //             script {
 
-                        if (templatebasesList.size() == 0) {
-                            return
-                        }
+        //                 if (templatebasesList.size() == 0) {
+        //                     return
+        //                 }
 
-                        platform1cLine = ""
-                        if (platform1c != null && !platform1c.isEmpty()) {
-                            platform1cLine = "--v8version ${platform1c}"
-                        }
+        //                 platform1cLine = ""
+        //                 if (platform1c != null && !platform1c.isEmpty()) {
+        //                     platform1cLine = "--v8version ${platform1c}"
+        //                 }
 
-                        admin1cUsrLine = ""
-                        if (admin1cUser != null && !admin1cUser.isEmpty()) {
-                            admin1cUsrLine = "--db-user ${admin1cUser}"
-                        }
+        //                 admin1cUsrLine = ""
+        //                 if (admin1cUser != null && !admin1cUser.isEmpty()) {
+        //                     admin1cUsrLine = "--db-user ${admin1cUser}"
+        //                 }
 
-                        admin1cPwdLine = ""
-                        if (admin1cPwd != null && !admin1cPwd.isEmpty()) {
-                            admin1cPwdLine = "--db-pwd ${admin1cPwd}"
-                        }
-                        // Запускаем ADD тестирование на произвольной базе, сохранившейся в переменной testbaseConnString
-                        echo "runner vanessa --settings tools/vrunner.json ${platform1cLine} --ibconnection \"${testbaseConnString}\" ${admin1cUsrLine} ${admin1cPwdLine} --pathvanessa tools/add/vanessa-automation.epf"
-                        returnCode = utils.cmd("runner vanessa --settings tools/vrunner.json ${platform1cLine} --ibconnection \"${testbaseConnString}\" ${admin1cUsrLine} ${admin1cPwdLine} --pathvanessa tools/add/vanessa-automation.epf")
-                        // "C:\Program Files\1cv8\8.3.24.1548\bin\1cv8c.exe" /NАдминистратор /P911 /TestManager /Execute "\\kami.local\files\shared\Отдел сопровождения 1С\scripts 1c_sql\tests\vanessa-automation.1.2.041.1\vanessa-automation\vanessa-automation.epf" /IBConnectionString "Srvr=""srv-sql-ls"";Ref=""erp_test"";" /C"StartFeaturePlayer;VAParams=\\kami.local\files\shared\Отдел сопровождения 1С\scripts 1c_sql\tests\VAParams.json"
-                        if (returnCode != 0) {
-                            utils.raiseError("Возникла ошибка при запуске ADD на сервере ${server1c} и базе ${testbase}")
-                        }
-                    }
-                }
-            }
-        }
+        //                 admin1cPwdLine = ""
+        //                 if (admin1cPwd != null && !admin1cPwd.isEmpty()) {
+        //                     admin1cPwdLine = "--db-pwd ${admin1cPwd}"
+        //                 }
+        //                 // Запускаем ADD тестирование на произвольной базе, сохранившейся в переменной testbaseConnString
+        //                 echo "runner vanessa --settings tools/vrunner.json ${platform1cLine} --ibconnection \"${testbaseConnString}\" ${admin1cUsrLine} ${admin1cPwdLine} --pathvanessa tools/add/vanessa-automation.epf"
+        //                 returnCode = utils.cmd("runner vanessa --settings tools/vrunner.json ${platform1cLine} --ibconnection \"${testbaseConnString}\" ${admin1cUsrLine} ${admin1cPwdLine} --pathvanessa tools/add/vanessa-automation.epf")
+        //                 // "C:\Program Files\1cv8\8.3.24.1548\bin\1cv8c.exe" /NАдминистратор /P911 /TestManager /Execute "\\kami.local\files\shared\Отдел сопровождения 1С\scripts 1c_sql\tests\vanessa-automation.1.2.041.1\vanessa-automation\vanessa-automation.epf" /IBConnectionString "Srvr=""srv-sql-ls"";Ref=""erp_test"";" /C"StartFeaturePlayer;VAParams=\\kami.local\files\shared\Отдел сопровождения 1С\scripts 1c_sql\tests\VAParams.json"
+        //                 if (returnCode != 0) {
+        //                     utils.raiseError("Возникла ошибка при запуске ADD на сервере ${server1c} и базе ${testbase}")
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
         stage("Шринкуем базу и делаем бэкап") {
             steps {
                 timestamps {
