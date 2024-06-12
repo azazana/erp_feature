@@ -21,7 +21,7 @@
     "ИмяФайлаЛогВыполненияСценариев": "$workspaceRoot/build/out/vbOnline.log",
     "ДелатьОтчетВФорматеjUnit": true,
     "КаталогOutputjUnit": "$workspaceRoot/build/out/bdd-junitreport",
-    "ДелатьСкриншотПриВозникновенииОшибки": true,
+    "ДелатьСкриншотПриВозникновенииОшибки": false,
     "СниматьСкриншотКаждогоОкна1С": false,
     "КаталогOutputСкриншоты": "$workspaceRoot/build/out/allure",
     "КомандаСделатьСкриншот": "nircmd savescreenshot ",
