@@ -177,7 +177,7 @@ pipeline {
                 timestamps {
                     script {
                         try {
-                            utils.deleteFile("B:\\BACKUP\erp_w_001_fresh_cut_.bak")
+                            utils.deleteFile("B:\\BACKUP\\erp_w_001_fresh_cut_.bak")
                         } catch (excp) {
                             echo "Error happened when shrink base ${testbase}."
                         }
