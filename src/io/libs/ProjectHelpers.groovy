@@ -115,9 +115,10 @@ def dropDb(server1c, agentPort, serverSql, base, admin1cUser, admin1cPwd, sqluse
 // Параметры:
 //
 //
-def loadCfgFrom1CStorage(storageTCP, storageUser, storagePwd, connString, admin1cUser, admin1cPassword, platform) {
+def loadCfgFrom1CStorage(storageTCP, storageUser, storagePwd, connString, admin1cUser, admin1cPassword, platform, extintion = "") {
     utils = new Utils()
-
+    echo "we are in "+extintion
+    echo extintion
     storagePwdLine = ""
     if (storagePwd != null && !storagePwd.isEmpty()) {
         storagePwdLine = "--storage-pwd ${storagePwd}"
@@ -127,13 +128,16 @@ def loadCfgFrom1CStorage(storageTCP, storageUser, storagePwd, connString, admin1
     if (platform != null && !platform.isEmpty()) {
         platformLine = "--v8version ${platform}"
     }
-
+    if (ext == "") {
     returnCode = utils.cmd("runner loadrepo --storage-name ${storageTCP} --storage-user ${storageUser} ${storagePwdLine} --ibconnection ${connString} --db-user ${admin1cUser} --db-pwd ${admin1cPassword} ${platformLine}")
+    }
+    else {
+        returnCode = utils.cmd("runner loadrepo --storage-name ${storageTCP} --storage-user ${storageUser} ${storagePwdLine} --ibconnection ${connString} --db-user ${admin1cUser} --db-pwd ${admin1cPassword} ${platformLine} --extintion ${extintion}")
+    } 
     if (returnCode != 0) {
          utils.raiseError("Загрузка конфигурации из 1С хранилища  ${storageTCP} завершилась с ошибкой. Для подробностей смотрите логи.")
     }
 }
-
 // Обновляет базу в режиме конфигуратора. Аналог нажатия кнопки f7
 //
 // Параметры:
