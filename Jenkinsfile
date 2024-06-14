@@ -165,6 +165,24 @@ pipeline {
                 }
             }
         }
+    }
+    post {
+        success {
+            emailext (
+                to: 'borzenkova@stanki.ru',
+                subject: "Build SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+                body: "Build SUCCESSFUL\n\nJob: ${env.JOB_NAME} [${env.BUILD_NUMBER}]\n\nCheck console output at ${env.BUILD_URL}",
+                recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+            )
+        }
+        failure {
+            emailext (
+                to: 'borzenkova@stanki.ru',
+                subject: "Build FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+                body: "Build FAILED\n\nJob: ${env.JOB_NAME} [${env.BUILD_NUMBER}]\n\nCheck console output at ${env.BUILD_URL}",
+                recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+            )
+        }
     }   
 }
 
