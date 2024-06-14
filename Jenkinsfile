@@ -83,42 +83,42 @@ pipeline {
                             backupDir = backupDir.isEmpty() ? "${env.WORKSPACE}/build/" : backupDir
                             
                             // // 1. Удаляем тестовую базу из кластера (если он там была) и очищаем клиентский кеш 1с
-                            // dropDbTasks["dropDbTask_${testbase}"] = dropDbTask(
-                            //     server1c, 
-                            //     server1cPort, 
-                            //     serverSql, 
-                            //     testbase, 
-                            //     admin1cUser, 
-                            //     admin1cPwd,
-                            //     sqluser,
-                            //     sqlPwd
-                            // )
+                            dropDbTasks["dropDbTask_${testbase}"] = dropDbTask(
+                                server1c, 
+                                server1cPort, 
+                                serverSql, 
+                                testbase, 
+                                admin1cUser, 
+                                admin1cPwd,
+                                sqluser,
+                                sqlPwd
+                            )
                            
                             // // 2. Загружаем последний бэкап sql в тестовую
-                            // restoreTasks["restoreTask_${testbase}"] = restoreTask(
-                            //     serverSql, 
-                            //     testbase, 
-                            //     backupDir,
-                            //     sqlUser,
-                            //     sqlPwd
-                            // )
+                            restoreTasks["restoreTask_${testbase}"] = restoreTask(
+                                serverSql, 
+                                testbase, 
+                                backupDir,
+                                sqlUser,
+                                sqlPwd
+                            )
                             // // 3. Создаем тестовую базу кластере 1С
-                            // createDbTasks["createDbTask_${testbase}"] = createDbTask(
-                            //     "${server1c}:${agent1cPort}",
-                            //     serverSql,
-                            //     platform1c,
-                            //     testbase
-                            // )
+                            createDbTasks["createDbTask_${testbase}"] = createDbTask(
+                                "${server1c}:${agent1cPort}",
+                                serverSql,
+                                platform1c,
+                                testbase
+                            )
 
                             // //4. Подключаем базу к хранилищу.
-                            // bindReposTasks["bindReposTask_${testbase}"] = bindReposTask(
-                            //     platform1c, server1c, testbase, admin1cUser, admin1cPwd, storage1cPath, storageUser, storagePwd 
-                            // ) 
+                            bindReposTasks["bindReposTask_${testbase}"] = bindReposTask(
+                                platform1c, server1c, testbase, admin1cUser, admin1cPwd, storage1cPath, storageUser, storagePwd 
+                            ) 
                             
                             // //4. Подключаем базу к расширению хранилищу.
-                            // bindReposExtTasks["bindReposExtTask_${testbase}"] = bindReposExtTask(
-                            //     platform1c, server1c, testbase, admin1cUser, admin1cPwd, storages1cPathExt, storageUser, storagePwd, ext
-                            // )   
+                            bindReposExtTasks["bindReposExtTask_${testbase}"] = bindReposExtTask(
+                                platform1c, server1c, testbase, admin1cUser, admin1cPwd, storages1cPathExt, storageUser, storagePwd, ext
+                            )   
 
                              // 5. Запускаем внешнюю обработку 1С, которая очищает базу от всплывающего окна с тем, что база перемещена при старте 1С
                             runHandlers1cTasks["runHandlers1cTask_${testbase}"] = runHandlers1cTask(
@@ -163,13 +163,6 @@ pipeline {
                             admin1cPwdLine = "--db-pwd ${admin1cPwd}"
                         }
                         // Запускаем ADD тестирование на произвольной базе, сохранившейся в переменной testbaseConnString
-                        //runner run --execute ${env.WORKSPACE}/one_script_tools/vanessa-automation.epf --command \"-locktype unlock\" ${admin1cUsrLine} ${admin1cPwdLine} --ibconnection=${connString} /C'StartFeaturePlayer;VAParams=\\kami.local\files\shared\Отдел сопровождения 1С\scripts 1c_sql\tests\VAParams.json
-                        // vrunner vanessa --settings tools\vrunner.json --v8version 8.3.24.1548 --ibconnection '/Slocalhost:1541\erp_test' --db-user Администратор --db-pwd 911 
-                        // returnCode = utils.cmd("'C:\Program Files\1cv8\8.3.24.1548\bin\1cv8c.exe' /NАдминистратор /P911 /TestManager /Execute '\\kami.local\files\shared\Отдел сопровождения 1С\scripts 1c_sql\tests\vanessa-automation.1.2.041.1\vanessa-automation\vanessa-automation.epf' /IBConnectionString 'Srvr=""srv-sql-ls"";Ref=""erp_test"";" /C'StartFeaturePlayer;VAParams=\\kami.local\files\shared\Отдел сопровождения 1С\scripts 1c_sql\tests\VAParams.json')
-                        // "runner vanessa --settings tools/vrunner.json --v8version 8.3.24.1548 --ibconnection '/Slocalhost:1541\erp_test' --db-user Администратор --db-pwd 911 --pathvanessa tools/add/vanessa-automation.epf"
-                        // echo "runner vanessa --settings tools/vrunner.json ${platform1cLine} --ibconnection \"${testbaseConnString}\" ${admin1cUsrLine} ${admin1cPwdLine} --pathvanessa tools/add/vanessa-automation.epf"
-                        // returnCode = utils.cmd("runner vanessa --settings tools/vrunner.json ${platform1cLine} --ibconnection \"${testbaseConnString}\" ${admin1cUsrLine} ${admin1cPwdLine} --pathvanessa tools/add/vanessa-automation.epf")
-                        // "C:\Program Files\1cv8\8.3.24.1548\bin\1cv8c.exe" /NАдминистратор /P911 /TestManager /Execute "\\kami.local\files\shared\Отдел сопровождения 1С\scripts 1c_sql\tests\vanessa-automation.1.2.041.1\vanessa-automation\vanessa-automation.epf" /IBConnectionString "Srvr=""srv-sql-ls"";Ref=""erp_test"";" /C"StartFeaturePlayer;VAParams=\\kami.local\files\shared\Отдел сопровождения 1С\scripts 1c_sql\tests\VAParams.json"
                         returnCode = utils.cmd("runner vanessa --settings tools/vrunner.json ${platform1cLine} --ibconnection \"${testbaseConnString}\" ${admin1cUsrLine} ${admin1cPwdLine} --pathvanessa tools/add/bddRunner.epf")
 
                         if (returnCode != 0) {
