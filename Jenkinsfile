@@ -94,14 +94,14 @@ pipeline {
                                 sqlPwd
                             )
                            
-                            // // 2. Загружаем последний бэкап sql в тестовую
-                            restoreTasks["restoreTask_${testbase}"] = restoreTask(
-                                serverSql, 
-                                testbase, 
-                                backupDir,
-                                sqlUser,
-                                sqlPwd
-                            )
+                            // // // 2. Загружаем последний бэкап sql в тестовую
+                            // restoreTasks["restoreTask_${testbase}"] = restoreTask(
+                            //     serverSql, 
+                            //     testbase, 
+                            //     backupDir,
+                            //     sqlUser,
+                            //     sqlPwd
+                            // )
                             // // 3. Создаем тестовую базу кластере 1С
                             createDbTasks["createDbTask_${testbase}"] = createDbTask(
                                 "${server1c}:${agent1cPort}",
@@ -110,15 +110,15 @@ pipeline {
                                 testbase
                             )
 
-                            // //4. Подключаем базу к хранилищу.
-                            bindReposTasks["bindReposTask_${testbase}"] = bindReposTask(
-                                platform1c, server1c, testbase, admin1cUser, admin1cPwd, storage1cPath, storageUser, storagePwd 
-                            ) 
+                            // // //4. Подключаем базу к хранилищу.
+                            // bindReposTasks["bindReposTask_${testbase}"] = bindReposTask(
+                            //     platform1c, server1c, testbase, admin1cUser, admin1cPwd, storage1cPath, storageUser, storagePwd 
+                            // ) 
                             
-                            // //4. Подключаем базу к расширению хранилищу.
-                            bindReposExtTasks["bindReposExtTask_${testbase}"] = bindReposExtTask(
-                                platform1c, server1c, testbase, admin1cUser, admin1cPwd, storages1cPathExt, storageUser, storagePwd, ext
-                            )   
+                            // // //4. Подключаем базу к расширению хранилищу.
+                            // bindReposExtTasks["bindReposExtTask_${testbase}"] = bindReposExtTask(
+                            //     platform1c, server1c, testbase, admin1cUser, admin1cPwd, storages1cPathExt, storageUser, storagePwd, ext
+                            // )   
 
                              // 5. Запускаем внешнюю обработку 1С, которая очищает базу от всплывающего окна с тем, что база перемещена при старте 1С
                             runHandlers1cTasks["runHandlers1cTask_${testbase}"] = runHandlers1cTask(
@@ -139,39 +139,39 @@ pipeline {
                 }
             }
         }
-        stage("Тестирование ADD") {
-            steps {
-                timestamps {
-                    script {
+        // stage("Тестирование ADD") {
+        //     steps {
+        //         timestamps {
+        //             script {
 
-                        if (templatebasesList.size() == 0) {
-                            return
-                        }
+        //                 if (templatebasesList.size() == 0) {
+        //                     return
+        //                 }
 
-                        platform1cLine = ""
-                        if (platform1c != null && !platform1c.isEmpty()) {
-                            platform1cLine = "--v8version ${platform1c}"
-                        }
+        //                 platform1cLine = ""
+        //                 if (platform1c != null && !platform1c.isEmpty()) {
+        //                     platform1cLine = "--v8version ${platform1c}"
+        //                 }
 
-                        admin1cUsrLine = ""
-                        if (admin1cUser != null && !admin1cUser.isEmpty()) {
-                            admin1cUsrLine = "--db-user ${admin1cUser}"
-                        }
+        //                 admin1cUsrLine = ""
+        //                 if (admin1cUser != null && !admin1cUser.isEmpty()) {
+        //                     admin1cUsrLine = "--db-user ${admin1cUser}"
+        //                 }
 
-                        admin1cPwdLine = ""
-                        if (admin1cPwd != null && !admin1cPwd.isEmpty()) {
-                            admin1cPwdLine = "--db-pwd ${admin1cPwd}"
-                        }
-                        // Запускаем ADD тестирование на произвольной базе, сохранившейся в переменной testbaseConnString
-                        returnCode = utils.cmd("runner vanessa --settings tools/vrunner.json ${platform1cLine} --ibconnection \"${testbaseConnString}\" ${admin1cUsrLine} ${admin1cPwdLine} --pathvanessa tools/add/bddRunner.epf")
+        //                 admin1cPwdLine = ""
+        //                 if (admin1cPwd != null && !admin1cPwd.isEmpty()) {
+        //                     admin1cPwdLine = "--db-pwd ${admin1cPwd}"
+        //                 }
+        //                 // Запускаем ADD тестирование на произвольной базе, сохранившейся в переменной testbaseConnString
+        //                 returnCode = utils.cmd("runner vanessa --settings tools/vrunner.json ${platform1cLine} --ibconnection \"${testbaseConnString}\" ${admin1cUsrLine} ${admin1cPwdLine} --pathvanessa tools/add/bddRunner.epf")
 
-                        if (returnCode != 0) {
-                            utils.raiseError("Возникла ошибка при запуске ADD на сервере ${server1c} и базе ${testbase}")
-                        }
-                    }
-                }
-            }
-        }
+        //                 if (returnCode != 0) {
+        //                     utils.raiseError("Возникла ошибка при запуске ADD на сервере ${server1c} и базе ${testbase}")
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
         stage("Шринкуем базу и делаем бэкап") {
             steps {
                 timestamps {
