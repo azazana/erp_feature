@@ -128,8 +128,8 @@ def loadCfgFrom1CStorage(storageTCP, storageUser, storagePwd, connString, admin1
     if (platform != null && !platform.isEmpty()) {
         platformLine = "--v8version ${platform}"
     }
-    if (ext == "") {
-    returnCode = utils.cmd("runner loadrepo --storage-name ${storageTCP} --storage-user ${storageUser} ${storagePwdLine} --ibconnection ${connString} --db-user ${admin1cUser} --db-pwd ${admin1cPassword} ${platformLine}")
+    if (extintion == "") {
+        returnCode = utils.cmd("runner loadrepo --storage-name ${storageTCP} --storage-user ${storageUser} ${storagePwdLine} --ibconnection ${connString} --db-user ${admin1cUser} --db-pwd ${admin1cPassword} ${platformLine}")
     }
     else {
         returnCode = utils.cmd("runner loadrepo --storage-name ${storageTCP} --storage-user ${storageUser} ${storagePwdLine} --ibconnection ${connString} --db-user ${admin1cUser} --db-pwd ${admin1cPassword} ${platformLine} --extension ${extintion}")
