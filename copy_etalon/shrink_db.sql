@@ -16,14 +16,14 @@ DECLARE @physicalName NVARCHAR(500), @logicalName NVARCHAR(500)
 
 use master
 
--- DECLARE @KillCommand nvarchar(max)
--- SET @KillCommand = ''
+DECLARE @KillCommand nvarchar(max)
+SET @KillCommand = ''
 
--- SELECT @KillCommand = @KillCommand + 'KILL ' + CONVERT(varchar(5), session_id) + ';'
--- FROM sys.dm_exec_sessions
--- WHERE database_id  = db_id(@DBName_To)
+SELECT @KillCommand = @KillCommand + 'KILL ' + CONVERT(varchar(5), session_id) + ';'
+FROM sys.dm_exec_sessions
+WHERE database_id  = db_id(@DBName_To)
 
--- EXEC(@KillCommand)
+EXEC(@KillCommand)
 
 USE erp_test;
 
