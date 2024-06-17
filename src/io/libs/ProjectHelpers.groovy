@@ -150,7 +150,7 @@ def loadCfgFrom1CStorage(storageTCP, storageUser, storagePwd, connString, admin1
 //  admin1cUser - администратор базы
 //  admin1cPassword - пароль администратора базы
 //
-def updateInfobase(connString, admin1cUser, admin1cPassword, platform, unlock_code="") {
+def updateInfobase(connString, admin1cUser, admin1cPassword, platform, unlock_code="", extintion = "") {
 
     utils = new Utils()
     admin1cUserLine = "";
@@ -169,6 +169,10 @@ def updateInfobase(connString, admin1cUser, admin1cPassword, platform, unlock_co
     if (unlock_code != "") {
         cmd_line = cmd_line +  " --uccode ${unlock_code}"
     }
+    if (extintion != "") {
+        cmd_line = cmd_line +  " --extension ${extintion}"
+    }
+
     returnCode = utils.cmd(cmd_line)
     if (returnCode != 0) {
         utils.raiseError("Обновление базы ${connString} в режиме конфигуратора завершилось с ошибкой. Для дополнительной информации смотрите логи")
