@@ -128,12 +128,12 @@ def loadCfgFrom1CStorage(storageTCP, storageUser, storagePwd, connString, admin1
     if (platform != null && !platform.isEmpty()) {
         platformLine = "--v8version ${platform}"
     }
-    cmd_line = "runner loadrepo --storage-name ${storageTCP} --storage-user ${storageUser} ${storagePwdLine} --ibconnection ${connString} --db-user ${admin1cUser} --db-pwd ${admin1cPassword} ${platformLine} --uccode ${unlock_code}"
+    cmd_line = "runner loadrepo --storage-name ${storageTCP} --storage-user ${storageUser} ${storagePwdLine} --ibconnection ${connString} --db-user ${admin1cUser} --db-pwd ${admin1cPassword} ${platformLine}"
     if (extintion != "") {
-        cmd_line = cmd_line +  "--extension ${extintion}"
+        cmd_line = cmd_line +  " --extension ${extintion}"
     }
     if (unlock_code != "") {
-        cmd_line = cmd_line +  "--uccode ${unlock_code}"
+        cmd_line = cmd_line +  " --uccode ${unlock_code}"
     }
 
     returnCode = utils.cmd(cmd_line)
@@ -165,8 +165,11 @@ def updateInfobase(connString, admin1cUser, admin1cPassword, platform, unlock_co
     if (platform != null && !platform.isEmpty()) {
         platformLine = "--v8version ${platform}"
     }
-
-    returnCode = utils.cmd("runner updatedb --ibconnection ${connString} ${admin1cUserLine} ${admin1cPassLine} ${platformLine} --uccode ${unlock_code}")
+    cmd_line = "runner updatedb --ibconnection ${connString} ${admin1cUserLine} ${admin1cPassLine} ${platformLine}"
+    if (unlock_code != "") {
+        cmd_line = cmd_line +  " --uccode ${unlock_code}"
+    }
+    returnCode = utils.cmd(cmd_line)
     if (returnCode != 0) {
         utils.raiseError("Обновление базы ${connString} в режиме конфигуратора завершилось с ошибкой. Для дополнительной информации смотрите логи")
     }
