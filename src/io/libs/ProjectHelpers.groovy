@@ -115,7 +115,7 @@ def dropDb(server1c, agentPort, serverSql, base, admin1cUser, admin1cPwd, sqluse
 // Параметры:
 //
 //
-def loadCfgFrom1CStorage(storageTCP, storageUser, storagePwd, connString, admin1cUser, admin1cPassword, platform, extintion = "") {
+def loadCfgFrom1CStorage(storageTCP, storageUser, storagePwd, connString, admin1cUser, admin1cPassword, platform, unlock_code = "", extintion = "") {
     utils = new Utils()
     echo "we are in "+extintion
     echo extintion
@@ -129,10 +129,10 @@ def loadCfgFrom1CStorage(storageTCP, storageUser, storagePwd, connString, admin1
         platformLine = "--v8version ${platform}"
     }
     if (extintion == "") {
-        returnCode = utils.cmd("runner loadrepo --storage-name ${storageTCP} --storage-user ${storageUser} ${storagePwdLine} --ibconnection ${connString} --db-user ${admin1cUser} --db-pwd ${admin1cPassword} ${platformLine}")
+        returnCode = utils.cmd("runner loadrepo --storage-name ${storageTCP} --storage-user ${storageUser} ${storagePwdLine} --ibconnection ${connString} --db-user ${admin1cUser} --db-pwd ${admin1cPassword} ${platformLine} --uccode ${unlock_code}")
     }
     else {
-        returnCode = utils.cmd("runner loadrepo --storage-name ${storageTCP} --storage-user ${storageUser} ${storagePwdLine} --ibconnection ${connString} --db-user ${admin1cUser} --db-pwd ${admin1cPassword} ${platformLine} --extension ${extintion}")
+        returnCode = utils.cmd("runner loadrepo --storage-name ${storageTCP} --storage-user ${storageUser} ${storagePwdLine} --ibconnection ${connString} --db-user ${admin1cUser} --db-pwd ${admin1cPassword} ${platformLine} --uccode ${unlock_code} --extension ${extintion}")
     } 
     if (returnCode != 0) {
          utils.raiseError("Загрузка конфигурации из 1С хранилища  ${storageTCP} завершилась с ошибкой. Для подробностей смотрите логи.")
@@ -147,7 +147,7 @@ def loadCfgFrom1CStorage(storageTCP, storageUser, storagePwd, connString, admin1
 //  admin1cUser - администратор базы
 //  admin1cPassword - пароль администратора базы
 //
-def updateInfobase(connString, admin1cUser, admin1cPassword, platform) {
+def updateInfobase(connString, admin1cUser, admin1cPassword, platform, unlock_code="") {
 
     utils = new Utils()
     admin1cUserLine = "";
@@ -163,7 +163,7 @@ def updateInfobase(connString, admin1cUser, admin1cPassword, platform) {
         platformLine = "--v8version ${platform}"
     }
 
-    returnCode = utils.cmd("runner updatedb --ibconnection ${connString} ${admin1cUserLine} ${admin1cPassLine} ${platformLine}")
+    returnCode = utils.cmd("runner updatedb --ibconnection ${connString} ${admin1cUserLine} ${admin1cPassLine} ${platformLine} --uccode ${unlock_code}")
     if (returnCode != 0) {
         utils.raiseError("Обновление базы ${connString} в режиме конфигуратора завершилось с ошибкой. Для дополнительной информации смотрите логи")
     }
