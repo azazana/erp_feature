@@ -178,6 +178,28 @@ def updateInfobase(connString, admin1cUser, admin1cPassword, platform, unlock_co
         utils.raiseError("Обновление базы ${connString} в режиме конфигуратора завершилось с ошибкой. Для дополнительной информации смотрите логи")
     }
 }
+def updateExtension(connString, admin1cUser, admin1cPassword, platform, unlock_code="", extintion = "") {
+ 
+    utils = new Utils()
+    admin1cUserLine = "";
+    if (!admin1cUser.isEmpty()) {
+        admin1cUserLine = "--db-user ${admin1cUser}"
+    }
+    admin1cPassLine = "";
+    if (!admin1cPassword.isEmpty()) {
+        admin1cPassLine = "--db-pwd ${admin1cPassword}"
+    }
+    platformLine = ""
+    if (platform != null && !platform.isEmpty()) {
+        platformLine = "--v8version ${platform}"
+    }
+    cmd_line = "vrunner updateext --ibconnection ${connString} ${admin1cUserLine} ${admin1cPassLine} ${platformLine} ${extintion}"
+    returnCode = utils.cmd(cmd_line)
+    if (returnCode != 0) {
+        utils.raiseError("Обновление базы ${connString} в режиме конфигуратора завершилось с ошибкой. Для дополнительной информации смотрите логи")
+    }
+
+}
 
 def bindRepo(platform1c, server1c, testbase, admin1cUser, admin1cPwd, storage1cPath, storageUser, storagePwd) {
     utils = new Utils()
