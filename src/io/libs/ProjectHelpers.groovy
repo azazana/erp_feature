@@ -253,10 +253,10 @@ def blockSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, unlock
 
 }
 
-def unBlockSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, unlock_code = "", clusterName="", rasPort="") {
+def unBlockSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, unlock_code = "", clusterName="Локальный кластер", rasPort="1545") {
     utils = new Utils()
     
-    cmd_line = "vrunner session unlock --ras ${server1c}:1545 --db ${testbase} --db-user ${admin1cUser} --db-pwd ${admin1cPwd} --v8version ${platform1c}  --uccode ${unlock_code}"
+    cmd_line = "vrunner session unlock --ras ${server1c}:${rasPort} --cluster-name \"${clusterName}\" --db ${testbase} --db-user ${admin1cUser} --db-pwd ${admin1cPwd} --v8version ${platform1c}  --uccode ${unlock_code}"
     
     returnCode = utils.cmd(cmd_line)
     if (returnCode != 0) {
@@ -265,14 +265,10 @@ def unBlockSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, unlo
 
 }
 
-def killDesinerSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, unlock_code = "", clusterName="", rasPort="") {
+def killDesinerSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, unlock_code = "", clusterName="Локальный кластер", rasPort="1545") {
     utils = new Utils()
     
-    cmd_line = "vrunner session kill --filter appid=Designer --ras ${server1c}:1545 --db ${testbase} --db-user ${admin1cUser} --db-pwd ${admin1cPwd} --v8version ${platform1c} --with-nolock"
-    
-    echo cmd_line
-    addition_line = get_addition_line(server1c, clusterName, rasPort)
-    cmd_line=cmd_line+addition_line
+    cmd_line = "vrunner session kill --filter appid=Designer --ras ${server1c}:${rasPort} --cluster-name \"${clusterName}\" --db ${testbase} --db-user ${admin1cUser} --db-pwd ${admin1cPwd} --v8version ${platform1c} --with-nolock"
     
     returnCode = utils.cmd(cmd_line)
 
@@ -283,10 +279,10 @@ def killDesinerSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, 
 }
 
 
-def killAllSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, unlock_code = "", clusterName="", rasPort="") {
+def killAllSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, unlock_code = "", clusterName="Локальный кластер", rasPort="1545") {
     utils = new Utils()
     
-    cmd_line = "vrunner session kill --db ${testbase} --db-user ${admin1cUser} --db-pwd ${admin1cPwd} --v8version ${platform1c}"
+    cmd_line = "vrunner session kill --ras ${server1c}:${rasPort} --cluster-name \"${clusterName}\"  --db ${testbase} --db-user ${admin1cUser} --db-pwd ${admin1cPwd} --v8version ${platform1c}"
     if (unlock_code != "") {
         cmd_line = cmd_line +  " --uccode ${unlock_code}"
     }
@@ -301,22 +297,3 @@ def killAllSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, unlo
     }
 
 } 
-def get_addition_linee(server1c, clusterName, rasPort){
-
-    addition_line=""
-    echo server1c+ clusterName+ rasPort
-     if (rasPort.isEmpty()) {
-        addition_line = addition_line + "--ras ${server1c}:1545"
-    }
-    else {
-        addition_line = addition_line + "--ras ${server1c}:${rasPort}"
-    }
-    if (!clusterName.isEmpty()) {
-        addition_line = addition_line + "--cluster-name ${clusterName}"
-    }
-    else {
-        addition_line = addition_line + "--cluster-name \"Локальный кластер\""
-    }
-    return addition_line
-    
-}
