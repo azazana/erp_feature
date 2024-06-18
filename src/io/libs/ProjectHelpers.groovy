@@ -270,6 +270,10 @@ def killDesinerSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, 
     
     cmd_line = "vrunner session kill --filter appid=Designer --ras ${server1c}:1545 --db ${testbase} --db-user ${admin1cUser} --db-pwd ${admin1cPwd} --v8version ${platform1c} --with-nolock"
     
+    addition_line = get_addition_line(server1c, clusterName, rasPort)
+    echo addition_line
+    cmd_line=cmd_line+addition_line
+    
     returnCode = utils.cmd(cmd_line)
 
     if (returnCode != 0) {
