@@ -287,7 +287,7 @@ def killAllSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, unlo
     if (unlock_code != "") {
         cmd_line = cmd_line +  " --uccode ${unlock_code}"
     }
-    returnCode = utils.cmd(cmd_line+addition_line)
+    returnCode = utils.cmd(cmd_line)
     
 
     if (returnCode != 0) {
