@@ -269,6 +269,10 @@ def killDesinerSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, 
     utils = new Utils()
     
     cmd_line = "vrunner session kill --filter appid=Designer --ras ${server1c}:${rasPort} --cluster-name \"${clusterName}\" --db ${testbase} --db-user ${admin1cUser} --db-pwd ${admin1cPwd} --v8version ${platform1c} --with-nolock"
+  
+    if (unlock_code != "") {
+        cmd_line = cmd_line +  " --uccode ${unlock_code}"
+    }
     
     returnCode = utils.cmd(cmd_line)
 
