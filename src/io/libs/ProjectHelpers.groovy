@@ -238,7 +238,7 @@ def bindExtRepo(platform1c, server1c, testbase, admin1cUser, admin1cPwd, storage
 def blockSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, unlock_code = "", clusterName, rasPort) {
     utils = new Utils()
     
-    cmd_line = "vrunner session lock --ras ${server1c}:1545 --db ${testbase} --db-user ${admin1cUser} --db-pwd ${admin1cPwd}  --lockendclear --lockmessage ""Уважаемые пользователи, в данный момент проводится плановое обновление базы данных."" --v8version ${platform1c}"
+    cmd_line = "vrunner session lock --ras ${server1c}:1545 --db ${testbase} --db-user ${admin1cUser} --db-pwd ${admin1cPwd}  --lockendclear --lockmessage \"Уважаемые пользователи, в данный момент проводится плановое обновление базы данных.\" --v8version ${platform1c}"
     
     
     if (unlock_code != "") {
@@ -309,7 +309,7 @@ def get_addition_linee(server1c, clusterName, rasPort){
         addition_line = addition_line + "--cluster-name ${clusterName}"
     }
     else{
-        addition_line = addition_line + "--cluster-name ""Локальный кластер"""
+        addition_line = addition_line + "--cluster-name \"Локальный кластер\""
     }
     return addition_line
     
