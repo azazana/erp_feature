@@ -235,7 +235,7 @@ def bindExtRepo(platform1c, server1c, testbase, admin1cUser, admin1cPwd, storage
 
 }
 
-def blockSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, unlock_code = "") {
+def blockSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, unlock_code = "", clusterName, rasPort) {
     utils = new Utils()
     
     cmd_line = "vrunner session lock --ras ${server1c}:1545 --db ${testbase} --db-user ${admin1cUser} --db-pwd ${admin1cPwd}  --lockendclear --lockmessage ""Уважаемые пользователи, в данный момент проводится плановое обновление базы данных."" --v8version ${platform1c}"
@@ -253,7 +253,7 @@ def blockSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, unlock
 
 }
 
-def unBlockSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, unlock_code = "") {
+def unBlockSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, unlock_code = "", clusterName, rasPort) {
     utils = new Utils()
     
     cmd_line = "vrunner session unlock --ras ${server1c}:1545 --db ${testbase} --db-user ${admin1cUser} --db-pwd ${admin1cPwd} --v8version ${platform1c}  --uccode ${unlock_code}"
@@ -265,7 +265,7 @@ def unBlockSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, unlo
 
 }
 
-def killDesinerSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, unlock_code = "") {
+def killDesinerSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, unlock_code = "", clusterName, rasPort) {
     utils = new Utils()
     
     cmd_line = "vrunner session kill --filter appid=Designer --ras ${server1c}:1545 --db ${testbase} --db-user ${admin1cUser} --db-pwd ${admin1cPwd} --v8version ${platform1c} --with-nolock"
@@ -279,19 +279,38 @@ def killDesinerSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, 
 }
 
 
-def killAllSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, unlock_code = "") {
+def killAllSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, unlock_code = "", clusterName, rasPort) {
     utils = new Utils()
     
-    cmd_line = "vrunner session kill --ras ${server1c}:1545 --db ${testbase} --db-user ${admin1cUser} --db-pwd ${admin1cPwd} --v8version ${platform1c}"
+    cmd_line = "vrunner session kill --db ${testbase} --db-user ${admin1cUser} --db-pwd ${admin1cPwd} --v8version ${platform1c}"
     if (unlock_code != "") {
         cmd_line = cmd_line +  " --uccode ${unlock_code}"
     }
     echo cmd_line
-    returnCode = utils.cmd(cmd_line)
+    addition_line = get_addition_line(server1c, clusterName, rasPort)
+    echo addition_line
+    returnCode = utils.cmd(cmd_line+addition_line)
     
 
     if (returnCode != 0) {
         utils.raiseError("Возникла ошибка при отключении пользоватей ${testbase}")
     }
 
+} 
+def get_addition_linee(server1c, clusterName, rasPort){
+    addition_line=""
+     if (rasPort.isEmpty()) {
+        addition_line = addition_line + "--ras ${server1c}:1545"
+    }
+    else{
+        addition_line = addition_line + "--ras ${server1c}:${rasPort}"
+    }
+    if (!clusterName.isEmpty()) {
+        addition_line = addition_line + "--cluster-name ${clusterName}"
+    }
+    else{
+        addition_line = addition_line + "--cluster-name ""Локальный кластер"""
+    }
+    return addition_line
+    
 }
