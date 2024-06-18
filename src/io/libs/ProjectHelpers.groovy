@@ -237,7 +237,7 @@ def bindExtRepo(platform1c, server1c, testbase, admin1cUser, admin1cPwd, storage
 def killDesinerSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, unlock_code = "") {
     utils = new Utils()
     
-    cmd_line = "vrunner session kill --filter appid=Designer --ras ${server1c}:1545 --db ${testbase} --db-user ${admin1cUser} --db-pwd ${admin1cPwd} --lockendclear --v8version ${platform1c}"
+    cmd_line = "vrunner session kill --filter appid=Designer --ras ${server1c}:1545 --db ${testbase} --db-user ${admin1cUser} --db-pwd ${admin1cPwd} --v8version ${platform1c}"
     echo cmd_line
     
     returnCode = utils.cmd(cmd_line)
