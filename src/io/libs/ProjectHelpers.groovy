@@ -302,17 +302,19 @@ def killAllSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, unlo
 
 } 
 def get_addition_linee(server1c, clusterName, rasPort){
+
     addition_line=""
+    echo server1c+ clusterName+ rasPort
      if (rasPort.isEmpty()) {
         addition_line = addition_line + "--ras ${server1c}:1545"
     }
-    else{
+    else {
         addition_line = addition_line + "--ras ${server1c}:${rasPort}"
     }
     if (!clusterName.isEmpty()) {
         addition_line = addition_line + "--cluster-name ${clusterName}"
     }
-    else{
+    else {
         addition_line = addition_line + "--cluster-name \"Локальный кластер\""
     }
     return addition_line
