@@ -283,6 +283,7 @@ def killAllSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, unlo
     utils = new Utils()
     
     cmd_line = "vrunner session kill --ras ${server1c}:${rasPort} --cluster-name \"${clusterName}\"  --db ${testbase} --db-user ${admin1cUser} --db-pwd ${admin1cPwd} --v8version ${platform1c}"
+    echo cmd_line
     if (unlock_code != "") {
         cmd_line = cmd_line +  " --uccode ${unlock_code}"
     }
