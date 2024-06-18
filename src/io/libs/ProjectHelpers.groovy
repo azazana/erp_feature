@@ -238,7 +238,7 @@ def killDesinerSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, 
     utils = new Utils()
     lockmessage = "blocked"
     path = "C:\\Program Files\\1cv8\\${platform1c}\\bin"
-    cmd_line = "vrunner session kill --filter appid=Designer --ras ${server1c}:1545 --rac ""${path}"" --db ${testbase} --db-user ${admin1cUser} --db-pwd ${admin1cPwd} --lockendclear --lockmessage  ${lockmessage} --v8version ${platform1c}"
+    cmd_line = "vrunner session kill --filter appid=Designer --ras ${server1c}:1545 --db ${testbase} --db-user ${admin1cUser} --db-pwd ${admin1cPwd} --lockendclear --lockmessage  ${lockmessage} --v8version ${platform1c}"
     echo cmd_line
     returnCode = utils.cmd(cmd_line)
      if (unlock_code != "") {
@@ -254,7 +254,7 @@ def killDesinerSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, 
 def blockSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, unlock_code = "") {
     utils = new Utils()
     
-    cmd_line = "vrunner session lock --ras ${server1c}:1545 --rac C:\\Program Files\\1cv8\\${platform1c}\\bin --db ${testbase} --db-user ${admin1cUser} --db-pwd ${admin1cPwd}  --lockendclear --lockmessage ""Уважаемые пользователи, в данный момент проводится плановое обновление базы данных."" --v8version ${platform1c}"
+    cmd_line = "vrunner session lock --ras ${server1c}:1545 --db ${testbase} --db-user ${admin1cUser} --db-pwd ${admin1cPwd}  --lockendclear --lockmessage ""Уважаемые пользователи, в данный момент проводится плановое обновление базы данных."" --v8version ${platform1c}"
     
     returnCode = utils.cmd(cmd_line)
     
@@ -271,7 +271,7 @@ def blockSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, unlock
 def unBlockSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, unlock_code = "") {
     utils = new Utils()
     
-    cmd_line = "vrunner session unlock --ras ${server1c}:1545 --rac C:\\Program Files\\1cv8\\${platform1c}\\bin --db ${testbase} --db-user ${admin1cUser} --db-pwd ${admin1cPwd} --v8version ${platform1c}  --uccode ${unlock_code}"
+    cmd_line = "vrunner session unlock --ras ${server1c}:1545 --db ${testbase} --db-user ${admin1cUser} --db-pwd ${admin1cPwd} --v8version ${platform1c}  --uccode ${unlock_code}"
     
     returnCode = utils.cmd(cmd_line)
     if (returnCode != 0) {
@@ -283,7 +283,7 @@ def unBlockSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, unlo
 def killAllSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, unlock_code = "") {
     utils = new Utils()
     
-    cmd_line = "vrunner session kill --ras ${server1c}:1545 --rac C:\\Program Files\\1cv8\\${platform1c}\\bin --db ${testbase} --db-user ${admin1cUser} --db-pwd ${admin1cPwd} --lockendclear --v8version ${platform1c}"
+    cmd_line = "vrunner session kill --ras ${server1c}:1545 --db ${testbase} --db-user ${admin1cUser} --db-pwd ${admin1cPwd} --lockendclear --v8version ${platform1c}"
     returnCode = utils.cmd(cmd_line)
      if (unlock_code != "") {
         cmd_line = cmd_line +  " --uccode ${unlock_code}"
