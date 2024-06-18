@@ -178,6 +178,18 @@ def updateInfobase(connString, admin1cUser, admin1cPassword, platform, unlock_co
         utils.raiseError("Обновление базы ${connString} в режиме конфигуратора завершилось с ошибкой. Для дополнительной информации смотрите логи")
     }
 }
+
+// Обновляет расширение в режиме конфигуратора
+//
+// Параметры:
+//
+//  connString - строка соединения, например /Sdevadapter\template_adapter_adapter
+//  platform - полный номер платформы 1с
+//  admin1cUser - администратор базы
+//  admin1cPassword - пароль администратора базы
+//  unlock_code - код разблокировки
+//  extintion - имя расширения
+//
 def updateExtension(connString, admin1cUser, admin1cPassword, platform, unlock_code="", extintion = "") {
  
     utils = new Utils()
@@ -198,7 +210,7 @@ def updateExtension(connString, admin1cUser, admin1cPassword, platform, unlock_c
     if (unlock_code != "") {
         cmd_line = cmd_line +  " --uccode ${unlock_code}"
     }
-    
+
     returnCode = utils.cmd(cmd_line)
     if (returnCode != 0) {
         utils.raiseError("Обновление базы ${connString} в режиме конфигуратора завершилось с ошибкой. Для дополнительной информации смотрите логи")
@@ -219,6 +231,20 @@ def bindExtRepo(platform1c, server1c, testbase, admin1cUser, admin1cPwd, storage
     returnCode = utils.cmd("oscript one_script_tools/bindRepoExt.os -platform ${platform1c} -server ${server1c} -base ${testbase} -user ${admin1cUser} -passw ${admin1cPwd} -storage1c ${storage1cPath} -storage1cuser ${storageUser} -extension  ${ext}")
     if (returnCode != 0) {
         utils.raiseError("Возникла ошибка при подключении ${testbase}  к расширению хранилища")
+    }
+
+}
+def killDesinerSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, unlock_code = "") {
+    utils = new Utils()
+    
+    cmd_line = "vrunner session kill --filter appid=Designer --ras ${server1c}:1545 --rac C:\\Program Files\\1cv8\\${RACPATH}\\bin --db ${testbase} --db-user ${admin1cUser} --db-pwd ${admin1cPwd}  --lockendclear --lockmessage ""Blocked for update"" --v8version ${platform1c}"
+    returnCode = utils.cmd(cmd_line)
+     if (unlock_code != "") {
+        cmd_line = cmd_line +  " --uccode ${unlock_code}"
+    }
+
+    if (returnCode != 0) {
+        utils.raiseError("Возникла ошибка при отключении пользователя конфигуратора ${testbase}")
     }
 
 }
