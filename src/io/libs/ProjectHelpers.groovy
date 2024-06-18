@@ -238,7 +238,6 @@ def killDesinerSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, 
     utils = new Utils()
     
     cmd_line = "vrunner session kill --filter appid=Designer --ras ${server1c}:1545 --db ${testbase} --db-user ${admin1cUser} --db-pwd ${admin1cPwd} --v8version ${platform1c} --with-nolock"
-    echo cmd_line
     
     returnCode = utils.cmd(cmd_line)
 
@@ -251,13 +250,14 @@ def killDesinerSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, 
 def blockSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, unlock_code = "") {
     utils = new Utils()
     
-    cmd_line = "vrunner session lock --ras ${server1c}:1545 --db ${testbase} --db-user ${admin1cUser} --db-pwd ${admin1cPwd}  --lockendclear --lockmessage ""Уважаемые пользователи, в данный момент проводится плановое обновление базы данных."" --v8version ${platform1c} -with-nolock"
+    cmd_line = "vrunner session lock --ras ${server1c}:1545 --db ${testbase} --db-user ${admin1cUser} --db-pwd ${admin1cPwd}  --lockendclear --lockmessage ""Уважаемые пользователи, в данный момент проводится плановое обновление базы данных."" --v8version ${platform1c}"
     
-    returnCode = utils.cmd(cmd_line)
     
     if (unlock_code != "") {
         cmd_line = cmd_line +  " --uccode ${unlock_code}"
     }
+
+    returnCode = utils.cmd(cmd_line)
 
     if (returnCode != 0) {
         utils.raiseError("Возникла ошибка при установик блокировки ${testbase}")
@@ -280,14 +280,15 @@ def unBlockSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, unlo
 def killAllSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, unlock_code = "") {
     utils = new Utils()
     
-    cmd_line = "vrunner session kill --ras ${server1c}:1545 --db ${testbase} --db-user ${admin1cUser} --db-pwd ${admin1cPwd} --lockendclear --v8version ${platform1c}"
-    returnCode = utils.cmd(cmd_line)
-     if (unlock_code != "") {
+    cmd_line = "vrunner session kill --ras ${server1c}:1545 --db ${testbase} --db-user ${admin1cUser} --db-pwd ${admin1cPwd} --v8version ${platform1c}"
+    if (unlock_code != "") {
         cmd_line = cmd_line +  " --uccode ${unlock_code}"
     }
+    returnCode = utils.cmd(cmd_line)
+    
 
     if (returnCode != 0) {
-        utils.raiseError("Возникла ошибка при отключении пользователя конфигуратора ${testbase}")
+        utils.raiseError("Возникла ошибка при отключении пользоватей ${testbase}")
     }
 
 }
