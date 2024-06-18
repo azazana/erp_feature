@@ -234,18 +234,6 @@ def bindExtRepo(platform1c, server1c, testbase, admin1cUser, admin1cPwd, storage
     }
 
 }
-def killDesinerSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, unlock_code = "") {
-    utils = new Utils()
-    
-    cmd_line = "vrunner session kill --filter appid=Designer --ras ${server1c}:1545 --db ${testbase} --db-user ${admin1cUser} --db-pwd ${admin1cPwd} --v8version ${platform1c} --with-nolock"
-    
-    returnCode = utils.cmd(cmd_line)
-
-    if (returnCode != 0) {
-        utils.raiseError("Возникла ошибка при отключении пользователя конфигуратора ${testbase}")
-    }
-
-}
 
 def blockSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, unlock_code = "") {
     utils = new Utils()
@@ -277,6 +265,20 @@ def unBlockSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, unlo
 
 }
 
+def killDesinerSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, unlock_code = "") {
+    utils = new Utils()
+    
+    cmd_line = "vrunner session kill --filter appid=Designer --ras ${server1c}:1545 --db ${testbase} --db-user ${admin1cUser} --db-pwd ${admin1cPwd} --v8version ${platform1c} --with-nolock"
+    
+    returnCode = utils.cmd(cmd_line)
+
+    if (returnCode != 0) {
+        utils.raiseError("Возникла ошибка при отключении пользователя конфигуратора ${testbase}")
+    }
+
+}
+
+
 def killAllSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, unlock_code = "") {
     utils = new Utils()
     
@@ -284,6 +286,7 @@ def killAllSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, unlo
     if (unlock_code != "") {
         cmd_line = cmd_line +  " --uccode ${unlock_code}"
     }
+    echo cmd_line
     returnCode = utils.cmd(cmd_line)
     
 
