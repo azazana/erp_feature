@@ -274,7 +274,7 @@ def unBlockSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, unlo
     
     returnCode = utils.cmd(cmd_line)
     if (returnCode != 0) {
-        utils.raiseError("Возникла ошибка при установик блокировки ${testbase}")
+        utils.raiseError("Возникла ошибка при снятии блокировки ${testbase}")
     }
 
 }
