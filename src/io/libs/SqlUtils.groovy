@@ -202,7 +202,7 @@ def shrink_db(infobase, dbServer, backupDir, sqlUser, sqlPwd) {
  
 }
 
-def restore_last_bk(dbServer, infobase, backupDir, sqlUser, sqlPwd) {
+def after_restore(dbServer, infobase, backupDir, sqlUser, sqlPwd) {
     utils = new Utils()
 
     sqlUserpath = "" 
@@ -218,7 +218,7 @@ def restore_last_bk(dbServer, infobase, backupDir, sqlUser, sqlPwd) {
 
     def latestBackup = getLatestBackup(backupDir)
 
-    returnCode = utils.cmd("sqlcmd -S ${dbServer} ${sqlUserpath} ${sqlPwdPath} -i \"${env.WORKSPACE}/copy_etalon/restore_last_bk.sql\" -b -v restoreddb =${infobase} -v bakfile=\"${latestBackup}\"")
+    returnCode = utils.cmd("sqlcmd -S ${dbServer} ${sqlUserpath} ${sqlPwdPath} -i \"${env.WORKSPACE}/copy_etalon/after_restore.sql\" -b -v restoreddb =${infobase} -v bakfile=\"${latestBackup}\"")
     if (returnCode != 0) {
          utils.raiseError("Возникла ошибка при восстановлении последнего sql бекапа ${dbServer}\\${infobase}. Для подробностей смотрите логи")
     } 
