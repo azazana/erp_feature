@@ -202,7 +202,7 @@ def shrink_db(infobase, dbServer, backupDir, sqlUser, sqlPwd) {
  
 }
 
-def restore_last_bk(infobase, dbServer, backupDir, sqlUser, sqlPwd) {
+def restore_last_bk(dbServer, infobase, backupDir, sqlUser, sqlPwd) {
     utils = new Utils()
 
     sqlUserpath = "" 
