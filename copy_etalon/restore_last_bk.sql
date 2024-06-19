@@ -25,7 +25,7 @@ WHERE database_id  = db_id(@DBName_To)
 
 EXEC(@KillCommand)
 
-USE erp_test;
+USE erp_rezerv;
 
 SET @SQLString = 
 'ALTER DATABASE CURRENT SET RECOVERY SIMPLE WITH NO_WAIT'
