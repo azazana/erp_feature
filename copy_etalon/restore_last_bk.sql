@@ -10,9 +10,9 @@ DECLARE @Path as nvarchar(400) = 'B:\BACKUP'
 -- СЛУЖЕБНЫЕ ПЕРЕМЕННЫЕ	
 DECLARE @SQLString NVARCHAR(4000)
 DECLARE @physicalName NVARCHAR(500), @logicalName NVARCHAR(500)
+--test
 
 -------------------------------------------
--- ТЕЛО СКРИПТА
 
 use master
 
