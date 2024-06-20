@@ -287,7 +287,6 @@ def killAllSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, unlo
     utils = new Utils()
     
     cmd_line = "vrunner session kill --ras ${server1c}:${rasPort} --cluster-name \"${clusterName}\"  --db ${testbase} --db-user ${admin1cUser} --db-pwd ${admin1cPwd} --v8version ${platform1c}"
-    echo cmd_line
     if (unlock_code != "") {
         cmd_line = cmd_line +  " --uccode ${unlock_code}"
     }
@@ -299,3 +298,34 @@ def killAllSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, unlo
     }
 
 } 
+
+def scheduledjobs_unlock(platform1c, server1c, testbase, admin1cUser, admin1cPwd, unlock_code = "", clusterName="Локальный кластер", rasPort="1545") {
+    utils = new Utils()
+  
+    cmd_line = "vrunner scheduledjobs unlock --ras ${server1c}:${rasPort} --cluster-name \"${clusterName}\"  --db ${testbase} --db-user ${admin1cUser} --db-pwd ${admin1cPwd} --v8version ${platform1c}";
+    if (unlock_code != "") {
+        cmd_line = cmd_line +  " --uccode ${unlock_code}"
+    }
+    returnCode = utils.cmd(cmd_line)
+    
+
+    if (returnCode != 0) {
+        utils.raiseError("Разблокировка регламентных заданий ${testbase}")
+    }
+
+}
+
+def scheduledjobs_lock(platform1c, server1c, testbase, admin1cUser, admin1cPwd, unlock_code = "", clusterName="Локальный кластер", rasPort="1545") {
+    utils = new Utils()
+  
+    cmd_line = "vrunner scheduledjobs lock --ras ${server1c}:${rasPort} --cluster-name \"${clusterName}\"  --db ${testbase} --db-user ${admin1cUser} --db-pwd ${admin1cPwd} --v8version ${platform1c}";
+    if (unlock_code != "") {
+        cmd_line = cmd_line +  " --uccode ${unlock_code}"
+    }
+    returnCode = utils.cmd(cmd_line)
+    
+
+    if (returnCode != 0) {
+        utils.raiseError("Блокировка регламентных заданий ${testbase}")
+    }
+}
