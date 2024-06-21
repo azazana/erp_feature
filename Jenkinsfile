@@ -172,7 +172,21 @@ pipeline {
             emailext (
                 to: 'borzenkova@stanki.ru',
                 subject: "Build SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
-                body: "Build SUCCESSFUL\n\nJob: ${env.JOB_NAME} [${env.BUILD_NUMBER}]\n\nCheck console output at ${env.BUILD_URL}",
+                 body: """
+                         Hello Team,
+
+                    This is to notify you that the Jenkins job ${env.JOB_NAME} has been executed.
+
+                    Job Name: ${env.JOB_NAME}
+                    Build Number: ${env.BUILD_NUMBER}
+                    Description: ${env.DESCRIPTION}
+                    URL: ${env.BUILD_URL}
+                    
+                    You can view more details and the console output at the following link:
+                    ${env.BUILD_URL}
+
+                    Best Regards,
+                    Your Jenkins Server                """
                 recipientProviders: [[$class: 'DevelopersRecipientProvider']]
             )
         }
@@ -180,7 +194,21 @@ pipeline {
             emailext (
                 to: 'borzenkova@stanki.ru',
                 subject: "Build FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
-                body: "Build FAILED\n\nJob: ${env.JOB_NAME} [${env.BUILD_NUMBER}]\n\nCheck console output at ${env.BUILD_URL}",
+                 body: """
+                         Hello Team,
+
+                    This is to notify you that the Jenkins job ${env.JOB_NAME} has been FAILED.
+
+                    Job Name: ${env.JOB_NAME}
+                    Build Number: ${env.BUILD_NUMBER}
+                    Description: ${env.DESCRIPTION}
+                    URL: ${env.BUILD_URL}
+                    
+                    You can view more details and the console output at the following link:
+                    ${env.BUILD_URL}
+
+                    Best Regards,
+                    Your Jenkins Server                """
                 recipientProviders: [[$class: 'DevelopersRecipientProvider']]
             )
         }
