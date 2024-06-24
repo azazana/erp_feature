@@ -187,7 +187,6 @@ pipeline {
 
                     Best Regards,
                     Your Jenkins Server                """
-                recipientProviders: [[$class: 'DevelopersRecipientProvider']]
             )
         }
         failure {
@@ -209,7 +208,6 @@ pipeline {
 
                     Best Regards,
                     Your Jenkins Server                """
-                recipientProviders: [[$class: 'DevelopersRecipientProvider']]
             )
         }
     }   
