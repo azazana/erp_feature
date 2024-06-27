@@ -273,6 +273,7 @@ def killDesinerSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, 
     if (unlock_code != "") {
         cmd_line = cmd_line +  " --uccode ${unlock_code}"
     }
+    echo cmd_line
     
     returnCode = utils.cmd(cmd_line)
 
