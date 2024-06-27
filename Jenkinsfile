@@ -168,11 +168,13 @@ pipeline {
         }
     }
     post {
-    success {
+    success {script {
         projectHelpers.sendNotification('SUCCESS', 'borzenkova@stanki.ru')
     }
-    failure {
+    }
+    failure {script {
         projectHelpers.sendNotification('FAILURE', 'borzenkova@stanki.ru')
+    }
     }
     }
 }
