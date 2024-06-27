@@ -168,49 +168,13 @@ pipeline {
         }
     }
     post {
-        success {
-            emailext (
-                to: 'borzenkova@stanki.ru',
-                subject: "Build SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
-                 body: """
-                         Hello Team,
-
-                    This is to notify you that the Jenkins job ${env.JOB_NAME} has been executed.
-
-                    Job Name: ${env.JOB_NAME}
-                    Build Number: ${env.BUILD_NUMBER}
-                    Description: ${env.DESCRIPTION}
-                    URL: ${env.BUILD_URL}
-                    
-                    You can view more details and the console output at the following link:
-                    ${env.BUILD_URL}
-
-                    Best Regards,
-                    Your Jenkins Server                """
-            )
-        }
-        failure {
-            emailext (
-                to: 'borzenkova@stanki.ru',
-                subject: "Build FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
-                 body: """
-                         Hello Team,
-
-                    This is to notify you that the Jenkins job ${env.JOB_NAME} has been FAILED.
-
-                    Job Name: ${env.JOB_NAME}
-                    Build Number: ${env.BUILD_NUMBER}
-                    Description: ${env.DESCRIPTION}
-                    URL: ${env.BUILD_URL}
-                    
-                    You can view more details and the console output at the following link:
-                    ${env.BUILD_URL}
-
-                    Best Regards,
-                    Your Jenkins Server                """
-            )
-        }
-    }   
+    success {
+        projectHelpers.sendNotification('SUCCESS', 'borzenkova@stanki.ru')
+    }
+    failure {
+        projectHelpers.sendNotification('FAILURE', 'borzenkova@stanki.ru')
+    }
+    }
 }
 
 

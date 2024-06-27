@@ -329,3 +329,47 @@ def scheduledjobsLock(platform1c, server1c, testbase, admin1cUser, admin1cPwd, u
         utils.raiseError("Блокировка регламентных заданий ${testbase}")
     }
 }
+
+def sendNotification(String status, String adress) {
+    def subject, body
+
+    if (status == 'SUCCESS') {
+        subject = "Сборка УСПЕШНА: Задание '${env.JOB_NAME} [${env.BUILD_NUMBER}]'"
+        body = """
+            Сообщаем вам, что задание Jenkins ${env.JOB_NAME} выполнено УСПЕШНО.
+
+            Название задания: ${env.JOB_NAME}
+            Номер сборки: ${env.BUILD_NUMBER}
+            Лог сборки: ${env.BUILD_URL}/console
+            URL: ${env.BUILD_URL}
+            
+            Вы можете просмотреть подробности и вывод консоли по следующей ссылке:
+            ${env.BUILD_URL}
+
+            С уважением,
+            Ваш сервер Jenkins
+        """
+    } else if (status == 'FAILURE') {
+        subject = "Сборка ПРОВАЛЕНА: Задание '${env.JOB_NAME} [${env.BUILD_NUMBER}]'"
+        body = """
+            Сообщаем вам, что задание Jenkins ${env.JOB_NAME} завершилось НЕУДАЧЕЙ.
+
+            Название задания: ${env.JOB_NAME}
+            Номер сборки: ${env.BUILD_NUMBER}
+            Лог сборки: ${env.BUILD_URL}/console
+            URL: ${env.BUILD_URL}
+            
+            Вы можете просмотреть подробности и вывод консоли по следующей ссылке:
+            ${env.BUILD_URL}
+
+            С уважением,
+            Ваш сервер Jenkins
+        """
+    }
+
+    emailext (
+        to: adress,
+        subject: subject,
+        body: body
+    )
+}
