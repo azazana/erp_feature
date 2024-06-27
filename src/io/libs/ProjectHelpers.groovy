@@ -340,7 +340,7 @@ def sendNotification(String status, String adress) {
 
             Название задания: ${env.JOB_NAME}
             Номер сборки: ${env.BUILD_NUMBER}
-            Лог сборки: ${env.BUILD_URL}/console
+            Лог сборки: ${env.BUILD_URL}console
             URL: ${env.BUILD_URL}
             
             Вы можете просмотреть подробности и вывод консоли по следующей ссылке:
@@ -356,7 +356,7 @@ def sendNotification(String status, String adress) {
 
             Название задания: ${env.JOB_NAME}
             Номер сборки: ${env.BUILD_NUMBER}
-            Лог сборки: ${env.BUILD_URL}/console
+            Лог сборки: ${env.BUILD_URL}console
             URL: ${env.BUILD_URL}
             
             Вы можете просмотреть подробности и вывод консоли по следующей ссылке:
