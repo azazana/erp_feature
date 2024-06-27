@@ -54,7 +54,7 @@ def unlocking1cBase(connString, admin1cUsr, admin1cPwd) {
         admin1cPwdLine = "--db-pwd ${admin1cPwd}"
     }
     
-    utils.cmd("runner run --execute ${env.WORKSPACE}/one_script_tools/unlockBase1C.epf --command \"-locktype unlock\" ${admin1cUsrLine} ${admin1cPwdLine} --ibconnection=${connString}")
+    utils.cmd("vrunner run --execute \"${env.WORKSPACE}/one_script_tools/unlockBase1C.epf\" --command \"-locktype unlock\" ${admin1cUsrLine} ${admin1cPwdLine} --ibconnection=${connString}")
 }
 
 def getConnString(server1c, infobase, agent1cPort) {
