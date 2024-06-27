@@ -25,6 +25,7 @@ def cmd(command, workDir = "") {
     } else {
         returnCode = bat script: "chcp 65001\n${command}", returnStatus: true
     }
+    echo command
     return returnCode
 }
 
