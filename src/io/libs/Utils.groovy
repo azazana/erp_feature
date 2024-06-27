@@ -179,7 +179,7 @@ def moveToFolder(destFolder) {
 //
 def deleteFile(filename) {
     echo "Deleting file ${filename}..."
-    returnCode = cmd("oscript ${env.WORKSPACE}/one_script_tools/deleteFile.os -file ${filename}")
+    returnCode = cmd("oscript \"${env.WORKSPACE}/one_script_tools/deleteFile.os\" -file ${filename}")
     if (returnCode != 0) {
         raiseError("Возникла ошибка при удалении файла: ${filename}")
     }
