@@ -24,7 +24,7 @@ def cmd(command, workDir = "") {
         returnCode = sh script: "${command}", returnStatus: true
     } else {
         echo command
-        returnCode = bat script: "chcp 65001\n${command}", returnStatus: true
+        returnCode = bat script: "${command}", returnStatus: true
     }
     return returnCode
 }
