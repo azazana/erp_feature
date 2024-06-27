@@ -23,7 +23,6 @@ def cmd(command, workDir = "") {
     if (isUnix()) {
         returnCode = sh script: "${command}", returnStatus: true
     } else {
-        echo  "chcp 65001\n${command}" 
         returnCode = bat script: "chcp 65001\n${command}", returnStatus: true
     }
     return returnCode
@@ -180,7 +179,7 @@ def moveToFolder(destFolder) {
 //
 def deleteFile(filename) {
     echo "Deleting file ${filename}..."
-    returnCode = cmd("oscript \"${env.WORKSPACE}/one_script_tools/deleteFile.os\" -file ${filename}")
+    returnCode = cmd("oscript ${env.WORKSPACE}/one_script_tools/deleteFile.os -file ${filename}")
     if (returnCode != 0) {
         raiseError("Возникла ошибка при удалении файла: ${filename}")
     }
