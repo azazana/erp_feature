@@ -348,7 +348,7 @@ def sendNotification(String status, String adress) {
 
             С уважением,
             Ваш сервер Jenkins
-        """
+            """
     } else if (status == 'FAILURE') {
         subject = "Сборка ПРОВАЛЕНА: Задание '${env.JOB_NAME} [${env.BUILD_NUMBER}]'"
         body = """
@@ -364,7 +364,7 @@ def sendNotification(String status, String adress) {
 
             С уважением,
             Ваш сервер Jenkins
-        """
+            """
     }
 
     emailext (
