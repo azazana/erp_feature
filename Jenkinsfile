@@ -184,11 +184,12 @@ def dropDbTask(server1c, server1cPort, serverSql, infobase, admin1cUser, admin1c
     return {
         timestamps {
             stage("Удаление ${infobase}") {
+                 retry(5) { 
                 def projectHelpers = new ProjectHelpers()
                 def utils = new Utils()
 
                 projectHelpers.dropDb(server1c, server1cPort, serverSql, infobase, admin1cUser, admin1cPwd, sqluser, sqlPwd)
-            }
+            }}
         }
     }
 }
@@ -197,11 +198,9 @@ def createDbTask(server1c, serverSql, platform1c, infobase) {
     return {
         stage("Создание базы ${infobase}") {
             timestamps {
+                 retry(5) { 
                 def projectHelpers = new ProjectHelpers()
-                try {
                     projectHelpers.createDb(platform1c, server1c, serversql, infobase, null, false)
-                } catch (excp) {
-                    echo "Error happened when creating base ${infobase}. Probably base already exists in the ibases.v8i list. Skip the error"
                 }
             }
         }
