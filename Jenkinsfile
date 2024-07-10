@@ -184,12 +184,14 @@ def dropDbTask(server1c, server1cPort, serverSql, infobase, admin1cUser, admin1c
     return {
         timestamps {
             stage("Удаление ${infobase}") {
-                 retry(5) { 
-                def projectHelpers = new ProjectHelpers()
-                def utils = new Utils()
+                retry(5) { 
+                    def projectHelpers = new ProjectHelpers()
+                    def utils = new Utils()
 
-                projectHelpers.dropDb(server1c, server1cPort, serverSql, infobase, admin1cUser, admin1cPwd, sqluser, sqlPwd)
-            }}
+                    projectHelpers.dropDb(server1c, server1cPort, serverSql, infobase, admin1cUser, admin1cPwd, sqluser, sqlPwd)
+            
+                }
+            }
         }
     }
 }
@@ -199,7 +201,7 @@ def createDbTask(server1c, serverSql, platform1c, infobase) {
         stage("Создание базы ${infobase}") {
             timestamps {
                  retry(5) { 
-                def projectHelpers = new ProjectHelpers()
+                    def projectHelpers = new ProjectHelpers()
                     projectHelpers.createDb(platform1c, server1c, serversql, infobase, null, false)
                 }
             }
@@ -237,13 +239,14 @@ def bindReposTask(platform1c, server1c, testbase, admin1cUser, admin1cPwd, stora
   return {
         stage("Подключение и обновление из хранилища ${testbase}") {
             timestamps {
+                retry(5) {
                 prHelpers = new ProjectHelpers()
 
                 if (storage1cPath == null || storage1cPath.isEmpty()) {
                     return
                 }    
-                prHelpers.bindRepo(platform1c, server1c, testbase, admin1cUser, admin1cPwd, storage1cPath, storageUser, storagePwd)
-
+                prHelpers.bindRepo(platform1c, server1c, testbase, admin1cUser, admin1cPwd, storage1cPath, storageUser, storagePwd) 
+                 }
             }
         }
     }
@@ -253,13 +256,14 @@ def bindReposExtTask(platform1c, server1c, testbase, admin1cUser, admin1cPwd, st
   return {
         stage("Подключение и обновление из расширения хранилища ${ext} ${testbase}") {
             timestamps {
+                retry(5) {
                 prHelpers = new ProjectHelpers()
 
                 if (storage1cPath == null || storage1cPath.isEmpty()) {
                     return
                 }    
                 prHelpers.bindExtRepo(platform1c, server1c, testbase, admin1cUser, admin1cPwd, storage1cPath, storageUser, storagePwd, ext)
-
+                }
             }
         }
     }
