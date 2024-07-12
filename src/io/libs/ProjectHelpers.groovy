@@ -268,7 +268,7 @@ def unBlockSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, unlo
 def killDesinerSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, unlock_code = "", clusterName="Локальный кластер", rasPort="1545") {
     utils = new Utils()
     
-    cmd_line = "vrunner session kill --filter appid=Designer --ras ${server1c}:${rasPort} --cluster-name \"${clusterName}\" --db ${testbase} --db-user ${admin1cUser} --db-pwd ${admin1cPwd} --v8version ${platform1c} --with-nolock"
+    cmd_line = "vrunner session kill --filter appid=Designer --ras ${server1c}:${rasPort} --cluster-name \"${clusterName}\" --db ${testbase} --db-user ${admin1cUser} --db-pwd ${admin1cPwd} --v8version ${platform1c} --with-nolock --try 5"
   
     if (unlock_code != "") {
         cmd_line = cmd_line +  " --uccode ${unlock_code}"
@@ -286,7 +286,7 @@ def killDesinerSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, 
 def killAllSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, unlock_code = "", clusterName="Локальный кластер", rasPort="1545") {
     utils = new Utils()
     
-    cmd_line = "vrunner session kill --ras ${server1c}:${rasPort} --cluster-name \"${clusterName}\"  --db ${testbase} --db-user ${admin1cUser} --db-pwd ${admin1cPwd} --v8version ${platform1c}"
+    cmd_line = "vrunner session kill --ras ${server1c}:${rasPort} --cluster-name \"${clusterName}\"  --db ${testbase} --db-user ${admin1cUser} --db-pwd ${admin1cPwd} --v8version ${platform1c}  --try 5"
     if (unlock_code != "") {
         cmd_line = cmd_line +  " --uccode ${unlock_code}"
     }
