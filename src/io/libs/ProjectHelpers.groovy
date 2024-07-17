@@ -165,7 +165,7 @@ def updateInfobase(connString, admin1cUser, admin1cPassword, platform, unlock_co
     if (platform != null && !platform.isEmpty()) {
         platformLine = "--v8version ${platform}"
     }
-    cmd_line = "runner updatedb --ibconnection ${connString} ${admin1cUserLine} ${admin1cPassLine} ${platformLine}"
+    cmd_line = "vrunner updatedb --ibconnection ${connString} ${admin1cUserLine} ${admin1cPassLine} ${platformLine}"
     if (unlock_code != "") {
         cmd_line = cmd_line +  " --uccode ${unlock_code}"
     }
