@@ -235,10 +235,10 @@ def bindExtRepo(platform1c, server1c, testbase, admin1cUser, admin1cPwd, storage
 
 }
 
-def blockSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, unlock_code = "", clusterName, rasPort="1545") {
+def blockSession(platform1c, server1c, testbase, admin1cUser, admin1cPwd, unlock_code = "", clusterName="Локальный кластер", rasPort="1545") {
     utils = new Utils()
     
-    cmd_line = "vrunner session lock --ras ${server1c}:${rasPort} --db ${testbase} --db-user ${admin1cUser} --db-pwd ${admin1cPwd}  --lockendclear --lockmessage \"Уважаемые пользователи, в данный момент проводится плановое обновление базы данных.\" --v8version ${platform1c}"
+    cmd_line = "vrunner session lock --ras ${server1c}:${rasPort} --cluster-name \"${clusterName}\" --db ${testbase} --db-user ${admin1cUser} --db-pwd ${admin1cPwd}  --lockendclear --lockmessage \"Уважаемые пользователи, в данный момент проводится плановое обновление базы данных.\" --v8version ${platform1c}"
     
     
     if (unlock_code != "") {
