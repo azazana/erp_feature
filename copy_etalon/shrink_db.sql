@@ -49,8 +49,8 @@ TRUNCATE Table _InfoRg41901X1;
 TRUNCATE Table _InfoRg43608;--замеры времени
 TRUNCATE Table _InfoRg92352; --лог напоминаний
 TRUNCATE Table _InfoRg92352X1; --лог напоминаний
-TRUNCATE Table InfoRg108340;-- использовагние отчетов
-TRUNCATE Table InfoRg50033; -- сведенья о файлах
+TRUNCATE Table _InfoRg108340;-- использовагние отчетов
+TRUNCATE Table _InfoRg50033; -- сведенья о файлах
 TRUNCATE Table _InfoRg85131; --–егистр—ведений.ѕЋ_”ведомлени¤
 TRUNCATE Table _InfoRg85131X1; --–егистр—ведений.ѕЋ_”ведомлени¤
 TRUNCATE Table _InfoRg101074; --–егистр—ведений. јћ»_ќчередьќбмен—ервисна¤—лужба
