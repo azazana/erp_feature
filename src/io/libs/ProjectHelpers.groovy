@@ -220,33 +220,26 @@ def updateExtension(connString, admin1cUser, admin1cPassword, platform, unlock_c
 
 def runUpdatedBase(connString, admin1cUser, admin1cPassword, platform, unlock_code) {
 
-    utils = new Utils()
-    admin1cUserLine = "";
-    if (!admin1cUser.isEmpty()) {
-        admin1cUserLine = "--db-user ${admin1cUser}"
-    }
-    admin1cPassLine = "";
-    if (!admin1cPassword.isEmpty()) {
-        admin1cPassLine = "--db-pwd ${admin1cPassword}"
-    }
-    platformLine = ""
-    if (platform != null && !platform.isEmpty()) {
-        platformLine = "--v8version ${platform}"
-    }
+    def utils = new Utils()
     
-    cmd_line = "vrunner run --command \"ЗапуститьОбновлениеИнформационнойБазы;ЗавершитьРаботуСистемы;\" --execute \"${env.WORKSPACE}/one_script_tools\ЗакрытьПредприятие.epf\" --ibconnection ${connString} ${admin1cUserLine} ${admin1cPassLine} ${platformLine}"
+    def admin1cUserLine = admin1cUser.isEmpty() ? "" : "--db-user ${admin1cUser}"
+    def admin1cPassLine = admin1cPassword.isEmpty() ? "" : "--db-pwd ${admin1cPassword}"
+    def platformLine = (platform != null && !platform.isEmpty()) ? "--v8version ${platform}" : ""
     
-    if (unlock_code != "") {
-        cmd_line = cmd_line +  " --uccode ${unlock_code}"
+    def cmd_line = "vrunner run --command \"ЗапуститьОбновлениеИнформационнойБазы;ЗавершитьРаботуСистемы;\" " +
+                   "--execute \"${env.WORKSPACE}/one_script_tools\\ЗакрытьПредприятие.epf\" " +
+                   "--ibconnection ${connString} ${admin1cUserLine} ${admin1cPassLine} ${platformLine}"
+    
+    if (!unlock_code.isEmpty()) {
+        cmd_line = cmd_line + " --uccode ${unlock_code}"
     }
 
-
-    returnCode = utils.cmd(cmd_line)
+    def returnCode = utils.cmd(cmd_line)
     if (returnCode != 0) {
         utils.raiseError("Запуск обработчиков обновления завершен с ошибкой. Для дополнительной информации смотрите логи")
     }
-
 }
+
 
 def bindRepo(platform1c, server1c, testbase, admin1cUser, admin1cPwd, storage1cPath, storageUser, storagePwd) {
     utils = new Utils()
