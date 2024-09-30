@@ -188,7 +188,7 @@ def dropDbTask(server1c, server1cPort, serverSql, infobase, admin1cUser, admin1c
                     def projectHelpers = new ProjectHelpers()
                     def utils = new Utils()
 
-                    projectHelpers.dropDb(server1c, server1cPort, serverSql, infobase, admin1cUser, admin1cPwd, sqluser, sqlPwd)
+                    //projectHelpers.dropDb(server1c, server1cPort, serverSql, infobase, admin1cUser, admin1cPwd, sqluser, sqlPwd)
             
                 }
             }
@@ -202,7 +202,7 @@ def createDbTask(server1c, serverSql, platform1c, infobase) {
             timestamps {
                  retry(5) { 
                     def projectHelpers = new ProjectHelpers()
-                    projectHelpers.createDb(platform1c, server1c, serversql, infobase, null, false)
+                    //projectHelpers.createDb(platform1c, server1c, serversql, infobase, null, false)
                 }
             }
         }
@@ -215,7 +215,7 @@ def restoreTask(serverSql, infobase, backupDir, sqlUser, sqlPwd) {
             timestamps {
                 sqlUtils = new SqlUtils()
 
-                sqlUtils.createEmptyDb(serverSql, infobase, sqlUser, sqlPwd)
+                //sqlUtils.createEmptyDb(serverSql, infobase, sqlUser, sqlPwd)
                 sqlUtils.restoreDb(serverSql, infobase, backupDir, sqlUser, sqlPwd)
             }
         }
