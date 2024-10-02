@@ -46,6 +46,7 @@ SET @SQLString =
 -- Очищаем версии объектов, вх, исх почту
 TRUNCATE Table _InfoRg41901;--версии объектов
 TRUNCATE Table _InfoRg41901;
+TRUNCATE Table _InfoRg50033; --свединья о файлах
 TRUNCATE Table _InfoRg43608;--замеры времени
 TRUNCATE Table _InfoRg92352; --лог напоминаний
 TRUNCATE Table _InfoRg92352; --лог напоминаний
