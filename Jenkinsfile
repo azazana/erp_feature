@@ -34,6 +34,7 @@ pipeline {
         string(defaultValue: "${env.backupDir}", description: 'Путь к бэкапам сетевым', name: 'backupDir')
         string(defaultValue: "${env.storages1cPathExt}", description: 'Путь к хранилищу расширения', name: 'storages1cPathExt')
         string(defaultValue: "${env.ext}", description: 'Название расширения', name: 'ext')
+        string(defaultValue: "${env.unlock_code}", description: 'Код разрешения', name: 'unlock_code')
         // booleanParam(defaultValue: "${env.skeep}", description: 'Пропустить деплой на сервере', name: 'skeep')
     }
 
@@ -113,7 +114,7 @@ pipeline {
 
                             // // //4. Подключаем базу к хранилищу.
                             bindReposTasks["bindReposTask_${testbase}"] = bindReposTask(
-                                platform1c, server1c, testbase, admin1cUser, admin1cPwd, storage1cPath, storageUser, storagePwd 
+                                platform1c, server1c, testbase, admin1cUser, admin1cPwd, storage1cPath, storageUser, storagePwd, unlock_code
                             ) 
                             
                             // // //4. Подключаем базу к расширению хранилищу.
@@ -216,7 +217,7 @@ def restoreTask(serverSql, infobase, backupDir, sqlUser, sqlPwd) {
                 sqlUtils = new SqlUtils()
 
                 //sqlUtils.createEmptyDb(serverSql, infobase, sqlUser, sqlPwd)
-                sqlUtils.restoreDb(serverSql, infobase, backupDir, sqlUser, sqlPwd)
+                //sqlUtils.restoreDb(serverSql, infobase, backupDir, sqlUser, sqlPwd)
             }
         }
     }
@@ -235,7 +236,7 @@ def runHandlers1cTask(infobase, admin1cUser, admin1cPwd, testbaseConnString) {
 
 
 
-def bindReposTask(platform1c, server1c, testbase, admin1cUser, admin1cPwd, storage1cPath, storageUser, storagePwd) {
+def bindReposTask(platform1c, server1c, testbase, admin1cUser, admin1cPwd, storage1cPath, storageUser, storagePwd, unlock_code) {
   return {
         stage("Подключение и обновление из хранилища ${testbase}") {
             timestamps {
@@ -245,7 +246,7 @@ def bindReposTask(platform1c, server1c, testbase, admin1cUser, admin1cPwd, stora
                 if (storage1cPath == null || storage1cPath.isEmpty()) {
                     return
                 }    
-                prHelpers.bindRepo(platform1c, server1c, testbase, admin1cUser, admin1cPwd, storage1cPath, storageUser, storagePwd) 
+                prHelpers.bindRepo(platform1c, server1c, testbase, admin1cUser, admin1cPwd, storage1cPath, storageUser, storagePwd, unlock_code) 
                  }
             }
         }
