@@ -241,22 +241,17 @@ def runUpdatedBase(connString, admin1cUser, admin1cPassword, platform, unlock_co
 }
 
 
-def bindRepo(platform1c, server1c, testbase, admin1cUser, admin1cPwd, storage1cPath, storageUser, storagePwd, unlock_code='') {
+def bindRepo(platform1c, server1c, testbase, admin1cUser, admin1cPwd, storage1cPath, storageUser, storagePwd) {
     utils = new Utils()
     returnCode = utils.cmd("oscript one_script_tools/bindRepo.os -platform ${platform1c} -server ${server1c} -base ${testbase} -user ${admin1cUser} -passw ${admin1cPwd} -storage1c ${storage1cPath} -storage1cuser ${storageUser}")
-    
     if (returnCode != 0) {
         utils.raiseError("Возникла ошибка при подключении ${testbase}  к хранилищу")
     }
 }
 
-def bindExtRepo(platform1c, server1c, testbase, admin1cUser, admin1cPwd, storage1cPath, storageUser, storagePwd, ext, unlock_code='') {
+def bindExtRepo(platform1c, server1c, testbase, admin1cUser, admin1cPwd, storage1cPath, storageUser, storagePwd, ext) {
     utils = new Utils()
-    cmd_line = "oscript one_script_tools/bindRepoExt.os -platform ${platform1c} -server ${server1c} -base ${testbase} -user ${admin1cUser} -passw ${admin1cPwd} -storage1c ${storage1cPath} -storage1cuser ${storageUser} -extension  ${ext}"
-    if (unlock_code != "") {
-        cmd_line = cmd_line +  " --uccode ${unlock_code}"
-    }
-    returnCode = utils.cmd(cmd_line)
+    returnCode = utils.cmd("oscript one_script_tools/bindRepoExt.os -platform ${platform1c} -server ${server1c} -base ${testbase} -user ${admin1cUser} -passw ${admin1cPwd} -storage1c ${storage1cPath} -storage1cuser ${storageUser} -extension  ${ext}")
     if (returnCode != 0) {
         utils.raiseError("Возникла ошибка при подключении ${testbase}  к расширению хранилища")
     }
