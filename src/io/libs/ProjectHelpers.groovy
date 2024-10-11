@@ -241,7 +241,7 @@ def runUpdatedBase(connString, admin1cUser, admin1cPassword, platform, unlock_co
 }
 
 
-def bindRepo(platform1c, server1c, testbase, admin1cUser, admin1cPwd, storage1cPath, storageUser, storagePwd) {
+def bindRepo(platform1c, server1c, testbase, admin1cUser, admin1cPwd, storage1cPath, storageUser, storagePwd, unlock_code='') {
     utils = new Utils()
     returnCode = utils.cmd("oscript one_script_tools/bindRepo.os -platform ${platform1c} -server ${server1c} -base ${testbase} -user ${admin1cUser} -passw ${admin1cPwd} -storage1c ${storage1cPath} -storage1cuser ${storageUser}")
     
