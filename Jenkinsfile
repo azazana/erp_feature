@@ -120,6 +120,33 @@ pipeline {
                             bindReposExtTasks["bindReposExtTask_${testbase}"] = bindReposExtTask(
                                 platform1c, server1c, testbase, admin1cUser, admin1cPwd, storages1cPathExt, storageUser, storagePwd, ext
                             )   
+                           // тестовая база должна быть уже подключена к хранилищу, обновляем ее из хранилища, расширения, запускаем тесты 
+                            // после этого делаем деплой.
+                            //1. Обновляем тестовую базу из хранилища
+                            updateDbStorageTasks["updateDbStorageTask_${testbase}"] = updateDbStorageTask(
+                                platform1c,
+                                testbase, 
+                                storage1cPath, 
+                                storageUser, 
+                                storagePwd, 
+                                testbaseConnString, 
+                                admin1cUser, 
+                                admin1cPwd, 
+                                unlock_code
+                            )
+                            // // 2. Обновление базы из расширения 
+                            updateDbStorageExtTasks["updateDbStorageExtTask_${testbase}"] = updateDbStorageExtTask(
+                                platform1c,
+                                testbase, 
+                                storages1cPathExt, 
+                                storageUser, 
+                                storagePwd, 
+                                testbaseConnString, 
+                                admin1cUser, 
+                                admin1cPwd,
+                                unlock_code,
+                                ext
+                            )
 
                              // 5. Запускаем внешнюю обработку 1С, которая очищает базу от всплывающего окна с тем, что база перемещена при старте 1С
                             runHandlers1cTasks["runHandlers1cTask_${testbase}"] = runHandlers1cTask(
@@ -192,6 +219,41 @@ def dropDbTask(server1c, server1cPort, serverSql, infobase, admin1cUser, admin1c
             
                 }
             }
+        }
+    }
+}
+def updateDbStorageTask(platform1c, infobase, storage1cPath, storageUser, storagePwd, connString, admin1cUser, admin1cPwd, unlock_code) {
+    return {
+        stage("Обновление из хранилища ${infobase}") {
+            timestamps {
+                retry(5) {  // Попытка выполнения 3 раза
+                prHelpers = new ProjectHelpers()
+
+                if (storage1cPath == null || storage1cPath.isEmpty()) {
+                    return
+                }
+
+                prHelpers.loadCfgFrom1CStorage(storage1cPath, storageUser, storagePwd, connString, admin1cUser, admin1cPwd, platform1c, unlock_code)
+            }
+        }
+        }
+    }
+}
+
+
+def updateDbStorageExtTask(platform1c, infobase, storage1cPath, storageUser, storagePwd, connString, admin1cUser, admin1cPwd, unlock_code, ext) {
+    return {
+        stage("Обновление из хранилища расширения ${infobase}") {
+            timestamps {
+                retry(5) {  // Попытка выполнения 3 раза
+                prHelpers = new ProjectHelpers()
+
+                if (storage1cPath == null || storage1cPath.isEmpty()) {
+                    return
+                }
+                prHelpers.loadCfgFrom1CStorage(storage1cPath, storageUser, storagePwd, connString, admin1cUser, admin1cPwd, platform1c, unlock_code, ext)
+            }
+        }
         }
     }
 }
