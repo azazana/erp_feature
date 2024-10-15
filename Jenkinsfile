@@ -66,6 +66,7 @@ pipeline {
                         agent1cPort = agent1cPort.isEmpty() ? "1541" : agent1cPort
                         env.sqlUser = sqlUser.isEmpty() ? "sa" : sqlUser
                         testbase = null
+                        unlock_code = unlock_code.isEmpty() ? "КодРазблокировки" : unlock_code
 
                         // создаем пустые каталоги
                         dir ('build') {
