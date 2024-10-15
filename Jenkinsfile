@@ -167,6 +167,8 @@ pipeline {
                         parallel createDbTasks
                         parallel bindReposTasks
                         parallel bindReposExtTasks
+                        parallel updateDbStorageTasks
+                        parallel updateDbStorageExtTasks
                         parallel runHandlers1cTasks
                     }
                 }
