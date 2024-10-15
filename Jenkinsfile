@@ -36,6 +36,8 @@ pipeline {
         string(defaultValue: "${env.backupDir}", description: 'Путь к бэкапам сетевым', name: 'backupDir')
         string(defaultValue: "${env.storages1cPathExt}", description: 'Путь к хранилищу расширения', name: 'storages1cPathExt')
         string(defaultValue: "${env.ext}", description: 'Название расширения', name: 'ext')
+        string(defaultValue: "${env.unlock_code}", description: 'Код разблокировки', name: 'unlock_code')
+        
         // booleanParam(defaultValue: "${env.skeep}", description: 'Пропустить деплой на сервере', name: 'skeep')
     }
 
