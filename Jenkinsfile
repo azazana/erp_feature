@@ -13,6 +13,8 @@ def createDbTasks = [:]
 def bindReposTasks = [:]
 def bindReposExtTasks = [:]
 def runHandlers1cTasks = [:]
+def updateDbStorageTasks = [:]
+def updateDbStorageExtTasks =[:]
 
 pipeline {
 
