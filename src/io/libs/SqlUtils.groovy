@@ -154,7 +154,6 @@ def restoreDb(dbServer, infobase, backupDir, sqlUser, sqlPwd) {
     if (sqlPwd != null && !sqlPwd.isEmpty()) {
         sqlPwdPath = "-P ${sqlPwd}"
     }
-    echo backupDir
 
     def latestBackup = getLatestBackup(backupDir)
     echo latestBackup
@@ -163,6 +162,7 @@ def restoreDb(dbServer, infobase, backupDir, sqlUser, sqlPwd) {
     if (returnCode != 0) {
          utils.raiseError("Возникла ошибка при восстановлении базы из sql бекапа ${dbServer}\\${infobase}. Для подробностей смотрите логи")
     } 
+    echo 'OK restore'
 }
 
 

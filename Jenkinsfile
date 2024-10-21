@@ -8,8 +8,6 @@ def utils = new Utils()
 def projectHelpers = new ProjectHelpers()
 def restoreTasks = [:]
 def checkPaths = [:]
-def dropDbTasks = [:]
-def createDbTasks = [:]
 def bindReposTasks = [:]
 def bindReposExtTasks = [:]
 def runHandlers1cTasks = [:]
@@ -88,17 +86,6 @@ pipeline {
                             testbaseConnString = projectHelpers.getConnString(server1c, testbase, agent1cPort)
                             backupDir = backupDir.isEmpty() ? "${env.WORKSPACE}/build/" : backupDir
                             
-                            // // 1. Удаляем тестовую базу из кластера (если он там была) и очищаем клиентский кеш 1с
-                            dropDbTasks["dropDbTask_${testbase}"] = dropDbTask(
-                                server1c, 
-                                server1cPort, 
-                                serverSql, 
-                                testbase, 
-                                admin1cUser, 
-                                admin1cPwd,
-                                sqluser,
-                                sqlPwd
-                            )
                            
                             // // // 2. Загружаем последний бэкап sql в тестовую
                             restoreTasks["restoreTask_${testbase}"] = restoreTask(
@@ -108,13 +95,8 @@ pipeline {
                                 sqlUser,
                                 sqlPwd
                             )
-                            // // 3. Создаем тестовую базу кластере 1С
-                            createDbTasks["createDbTask_${testbase}"] = createDbTask(
-                                "${server1c}:${agent1cPort}",
-                                serverSql,
-                                platform1c,
-                                testbase
-                            )
+                            echo   'OK restore?'
+
 
                             // // //4. Подключаем базу к хранилищу.
                             bindReposTasks["bindReposTask_${testbase}"] = bindReposTask(
@@ -164,7 +146,6 @@ pipeline {
 
                         parallel dropDbTasks
                         parallel restoreTasks
-                        parallel createDbTasks
                         parallel bindReposTasks
                         parallel bindReposExtTasks
                         parallel updateDbStorageTasks
@@ -309,6 +290,7 @@ def bindReposTask(platform1c, server1c, testbase, admin1cUser, admin1cPwd, stora
         stage("Подключение и обновление из хранилища ${testbase}") {
             timestamps {
                 retry(5) {
+                echo   'OK bind start?'
                 prHelpers = new ProjectHelpers()
 
                 if (storage1cPath == null || storage1cPath.isEmpty()) {
