@@ -144,7 +144,6 @@ pipeline {
                             )
                         }
 
-                        parallel dropDbTasks
                         parallel restoreTasks
                         parallel bindReposTasks
                         parallel bindReposExtTasks
@@ -195,21 +194,6 @@ pipeline {
 }
 
 
-def dropDbTask(server1c, server1cPort, serverSql, infobase, admin1cUser, admin1cPwd, sqluser, sqlPwd) {
-    return {
-        timestamps {
-            stage("Удаление ${infobase}") {
-                retry(5) { 
-                    def projectHelpers = new ProjectHelpers()
-                    def utils = new Utils()
-
-                    //projectHelpers.dropDb(server1c, server1cPort, serverSql, infobase, admin1cUser, admin1cPwd, sqluser, sqlPwd)
-            
-                }
-            }
-        }
-    }
-}
 def updateDbStorageTask(platform1c, infobase, storage1cPath, storageUser, storagePwd, connString, admin1cUser, admin1cPwd, unlock_code) {
     return {
         stage("Обновление из хранилища ${infobase}") {
