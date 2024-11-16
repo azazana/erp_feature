@@ -144,12 +144,12 @@ pipeline {
                             )
                         }
 
-                        parallel restoreTasks
-                        parallel bindReposTasks
-                        parallel bindReposExtTasks
-                        parallel updateDbStorageTasks
-                        parallel updateDbStorageExtTasks
-                        parallel runHandlers1cTasks
+                        // parallel restoreTasks
+                        // parallel bindReposTasks
+                        // parallel bindReposExtTasks
+                        // parallel updateDbStorageTasks
+                        // parallel updateDbStorageExtTasks
+                        // parallel runHandlers1cTasks
                     }
                 }
             }
