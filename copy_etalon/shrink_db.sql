@@ -54,6 +54,7 @@ TRUNCATE Table _InfoRg85131; --–егистр—ведений.ѕЋ_”ведо
 TRUNCATE Table _InfoRg101074; --–егистр—ведений. јћ»_ќчередьќбмен—ервисна¤—лужба
 TRUNCATE Table _InfoRg92404; --оплаты номенклатуры
 TRUNCATE Table _InfoRg43445;
+TRUNCATE Table _InfoRg84368;
 TRUNCATE TABLE _Document1440
 TRUNCATE TABLE _Document1440_VT37653
 TRUNCATE TABLE _Document1440_VT37658
