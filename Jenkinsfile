@@ -107,9 +107,7 @@ pipeline {
                             bindReposExtTasks["bindReposExtTask_${testbase}"] = bindReposExtTask(
                                 platform1c, server1c, testbase, admin1cUser, admin1cPwd, storages1cPathExt, storageUser, storagePwd, ext
                             )   
-                           // тестовая база должна быть уже подключена к хранилищу, обновляем ее из хранилища, расширения, запускаем тесты 
-                            // после этого делаем деплой.
-                            //1. Обновляем тестовую базу из хранилища
+                           //1. Обновляем тестовую базу из хранилища
                             updateDbStorageTasks["updateDbStorageTask_${testbase}"] = updateDbStorageTask(
                                 platform1c,
                                 testbase, 
