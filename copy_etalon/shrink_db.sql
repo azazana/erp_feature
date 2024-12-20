@@ -40,10 +40,7 @@ PRINT @SQLString
 EXEC sp_executesql @SQLString
 
 SET @SQLString = 
-
 '
-
--- Очищаем версии объектов, вх, исх почту
 TRUNCATE Table _InfoRg41901;--версии объектов
 TRUNCATE Table _InfoRg50033; --свединья о файлах
 TRUNCATE Table _InfoRg43608;--замеры времени
@@ -55,6 +52,8 @@ TRUNCATE Table _InfoRg101074; --–егистр—ведений. јћ»_ќче
 TRUNCATE Table _InfoRg92404; --оплаты номенклатуры
 TRUNCATE Table _InfoRg43445;
 TRUNCATE Table _InfoRg84368;
+TRUNCATE Table _InfoRg51545
+TRUNCATE Table _Reference112053
 TRUNCATE TABLE _Document1440
 TRUNCATE TABLE _Document1440_VT37653
 TRUNCATE TABLE _Document1440_VT37658
@@ -137,9 +136,6 @@ TRUNCATE TABLE _ReferenceChngR85836
 TRUNCATE TABLE _ReferenceChngR88884
 TRUNCATE TABLE _ReferenceChngR89666
 TRUNCATE TABLE _DocumentChngR2846
-TRUNCATE TABLE _ReferenceChngR74204
-TRUNCATE TABLE _DocumentChngR82434
-TRUNCATE TABLE _DocumentChngR14859
 TRUNCATE TABLE _DocumentChngR33919
 TRUNCATE TABLE _ReferenceChngR77156'
 
