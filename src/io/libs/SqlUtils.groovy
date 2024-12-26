@@ -203,6 +203,26 @@ def shrink_db(infobase, dbServer, backupDir, sqlUser, sqlPwd) {
     } 
  
 }
+def simple_db(infobase, dbServer, backupDir, sqlUser, sqlPwd){
+        utils = new Utils()
+
+    sqlUserpath = "" 
+    if (sqlUser != null && !sqlUser.isEmpty()) {
+        sqlUserpath = "-U ${sqlUser}"
+    } else {
+        sqlUserpath = "-E"
+    }
+    sqlPwdPath = "" 
+    if (sqlPwd != null && !sqlPwd.isEmpty()) {
+        sqlPwdPath = "-P ${sqlPwd}"
+    }
+
+    returnCode = utils.cmd("sqlcmd -S ${dbServer} ${sqlUserpath} ${sqlPwdPath} -i \"${env.WORKSPACE}/copy_etalon/simple.sql\" -b -v restoreddb =${infobase}")
+    if (returnCode != 0) {
+         utils.raiseError("Возникла ошибка при обрезании базы из sql бекапа ${dbServer}\\${infobase}. Для подробностей смотрите логи")
+    } 
+   
+}
 
 def after_restore(dbServer, infobase, backupDir, sqlUser, sqlPwd) {
     utils = new Utils()
